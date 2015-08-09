@@ -1,0 +1,3 @@
+== README
+
+Personal sandbox project for rails framework.
