@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150809094040) do
+ActiveRecord::Schema.define(version: 20150926140614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,29 @@ ActiveRecord::Schema.define(version: 20150809094040) do
     t.string   "year"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "structure_pages", force: :cascade do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.string   "permalink"
+    t.integer  "parent_id"
+    t.boolean  "visible"
+    t.datetime "published_at"
+    t.string   "language"
+    t.integer  "content_id"
+    t.string   "content_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "structure_pages", ["content_type", "content_id"], name: "index_structure_pages_on_content_type_and_content_id", using: :btree
+
+  create_table "text_pages", force: :cascade do |t|
+    t.string   "title"
+    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
