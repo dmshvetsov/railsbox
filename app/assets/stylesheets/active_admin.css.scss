@@ -6,6 +6,8 @@
 //
 // For example, to change the sidebar width:
 // $sidebar-width: 242px;
+//
+//= require activeadmin-sortable
 
 // Active Admin's got SASS!
 @import "active_admin/mixins";
@@ -15,3 +17,47 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+
+/**
+ * Index as tree with childs
+ */
+.table-with-tree__clearfix {
+  @include clearfix;
+}
+
+.table-with-tree__categorizer {
+  float: left;
+  width: 270px;
+
+  .panel_contents {
+    @include clearfix;
+  }
+
+  ul ul {
+    padding-left: 16px;
+  }
+
+  a {
+    display: block;
+    float: left;
+    clear: both;
+    color: $link-color;
+    padding: 3px 6px 3px 6px;
+    border-radius: 3px;
+  }
+
+  .active {
+    color: #ffffff;
+    background-color: $current-menu-item-background;
+    text-decoration: none;
+  }
+
+  .unpublished {
+    color: #bdbdbd;
+  }
+}
+
+.table-with-tree__collection {
+  margin-left: 300px;
+}

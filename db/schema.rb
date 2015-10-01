@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150926140614) do
+ActiveRecord::Schema.define(version: 20150928124041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,15 @@ ActiveRecord::Schema.define(version: 20150926140614) do
     t.datetime "updated_at",   null: false
   end
 
+  create_table "structure_page_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id",   null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations",   null: false
+  end
+
+  add_index "structure_page_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "page_anc_desc_idx", unique: true, using: :btree
+  add_index "structure_page_hierarchies", ["descendant_id"], name: "page_desc_idx", using: :btree
+
   create_table "structure_pages", force: :cascade do |t|
     t.string   "title"
     t.string   "slug"
@@ -61,6 +70,8 @@ ActiveRecord::Schema.define(version: 20150926140614) do
     t.string   "content_type"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "position"
+    t.string   "type"
   end
 
   add_index "structure_pages", ["content_type", "content_id"], name: "index_structure_pages_on_content_type_and_content_id", using: :btree

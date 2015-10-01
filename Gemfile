@@ -16,7 +16,11 @@ gem 'jquery-rails', '4.0.4'
 
 # Admin interface
 gem 'activeadmin', '1.0.0.pre1'
+gem 'activeadmin-sortable', '0.0.3'
 gem 'devise', '3.5.1'
+
+gem 'acts_as_list', '0.7.2'
+gem 'closure_tree', '5.2.0'
 
 
 group :development, :test do

@@ -9,7 +9,7 @@ module ActiveAdmin
         categorizer_current_id = params['categorizer_current_id']
 
         resource_name = active_admin_config.resource_name
-        @categorizer = Categorizer.new(resource_name.singular, categorizer_current_id, collection)
+        @categorizer = Categorizer.new(resource_name.singular, resource_name.name, categorizer_current_id, collection)
 
         panel 'Sections', class: 'table-with-tree__categorizer' do
           build_tree @categorizer.tree
@@ -48,7 +48,7 @@ module ActiveAdmin
         current_category = @categorizer.current_category
 
         panel current_category.title do
-          div (current_category.public) ? 'visible' : 'hidden'
+          div (current_category.visible) ? 'visible' : 'hidden'
           div do
             route = ['edit', 'admin', current_category.model_name.singular_route_key, 'path'].join('_')
             link_to 'Edit section', send(route, current_category)
@@ -61,12 +61,14 @@ module ActiveAdmin
       end
 
       def build_childs_table(categorizer_current_id)
-        childs_categories = @collection.where(parent_id: categorizer_current_id)
+        sql = { parent_id: categorizer_current_id }
+        sql[:type] = @page_presenter[:childs_type] if @page_presenter[:childs_type]
+        childs_categories = @collection.where sql
 
         childs_categories_presenter = ActiveAdmin::PagePresenter.new as: :table do
           selectable_column
           column :title
-          column :public
+          column :visible
           sortable_handle_column
           actions
         end
@@ -81,7 +83,7 @@ module ActiveAdmin
         content_presenter = ActiveAdmin::PagePresenter.new as: :table do
           selectable_column
           column :title
-          column :public
+          column :visible
           # Method from the activeadmin-sortable gem
           # ActiveAdmin::Sortable::ControllerActions::TableMethods::sortable_handle_column
           # TODO: abandon activeadmin-sortable in the future

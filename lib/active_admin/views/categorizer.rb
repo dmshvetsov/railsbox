@@ -8,9 +8,9 @@ module ActiveAdmin
 
       attr_reader :name, :current_category, :model
 
-      def initialize(name, current_id, associated_collection)
+      def initialize(name, model, current_id, associated_collection)
         @name = name
-        @model = name.classify.constantize
+        @model = model.constantize
         @current_id = current_id.to_i if current_id
         @associated_collection = associated_collection
 
@@ -56,7 +56,7 @@ module ActiveAdmin
       def css_class_for category
         css_class = []
         css_class << 'active' if category.id == @current_id
-        css_class << 'unpublished' unless category.public
+        css_class << 'unpublished' unless category.visible
         css_class.empty? ? nil : css_class.join(' ')
       end
 
