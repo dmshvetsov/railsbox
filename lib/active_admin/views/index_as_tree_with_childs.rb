@@ -62,7 +62,6 @@ module ActiveAdmin
 
       def build_childs_table(categorizer_current_id)
         sql = { parent_id: categorizer_current_id }
-        sql[:type] = @page_presenter[:childs_type] if @page_presenter[:childs_type]
         childs_categories = @collection.where sql
 
         childs_categories_presenter = ActiveAdmin::PagePresenter.new as: :table do

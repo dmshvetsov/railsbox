@@ -27,28 +27,29 @@ ActiveAdmin.register Structure::ContentPage do
     end
     f.actions do
       f.action :submit, as: :input
-      f.action :cancel, as: :link, url: admin_structure_pages_path(categorizer_current_id: f.object.parent_id), wrapper_html: { class: 'cancel' }
+      f.action :cancel, as: :link, url: admin_structure_section_pages_path(categorizer_current_id: f.object.parent_id || params[:parent_id]), wrapper_html: { class: 'cancel' }
     end
   end
 
   controller do
     def create
       super do |success, failure|
-        success.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.id) }
+        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.id) }
       end
     end
 
     def update
       super do |success, failure|
-        success.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.id) }
+        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.id) }
       end
     end
 
     def destroy
       destroy! do |format|
-        format.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.parent_id) }
+        format.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id) }
       end
     end
   end
+
 
 end
