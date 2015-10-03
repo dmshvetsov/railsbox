@@ -2,6 +2,8 @@ ActiveAdmin.register Structure::ContentPage do
 
   menu false
   actions :all, except: [:index, :show]
+  config.sort_order = 'position_asc'
+  sortable
 
   permit_params :title,
     :slug,

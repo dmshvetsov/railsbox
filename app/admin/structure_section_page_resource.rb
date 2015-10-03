@@ -10,8 +10,8 @@ ActiveAdmin.register Structure::SectionPage do
 
   config.clear_action_items!
   config.filters = false
-  config.sort_order = 'position_asc' # assumes you are using 'position' for your acts_as_list column
-  sortable # creates the controller action which handles the sorting
+  config.sort_order = 'position_asc'
+  sortable
 
   index as: :tree_with_childs, content: :content_page
 
