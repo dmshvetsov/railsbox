@@ -1,5 +1,7 @@
 ActiveAdmin.register Structure::SectionPage do
 
+  menu label: 'Site Structure'
+
   permit_params :title,
     :slug,
     :parent_id,
@@ -15,23 +17,19 @@ ActiveAdmin.register Structure::SectionPage do
 
   index as: :tree_with_childs, content: :content_page
 
-  action_item 'Create content', only: :index, if: proc { params[:categorizer_current_id].present? } do
-    link_to 'Create content', new_admin_structure_content_page_path(parent_id: params[:categorizer_current_id])
+  action_item 'Create Content', only: :index, if: proc { params[:categorizer_current_id].present? } do
+    link_to 'Create Content Page', new_admin_structure_content_page_path(parent_id: params[:categorizer_current_id])
   end
 
-  action_item 'Create section', only: :index do
-    link_to 'Create section', new_admin_structure_section_page_path(parent_id: params[:categorizer_current_id])
+  action_item 'Create Section', only: :index do
+    link_to 'Create Section Page', new_admin_structure_section_page_path(parent_id: params[:categorizer_current_id])
   end
 
 
   form do |f|
     f.semantic_errors
     f.inputs do
-      if params[:parent_id]
-        f.input :parent_id, as: :hidden, input_html: { value: params[:parent_id] }
-      else
-        f.input :parent
-      end
+      f.input :parent
       f.input :title
       f.input :slug
       f.input :language
@@ -45,6 +43,12 @@ ActiveAdmin.register Structure::SectionPage do
   end
 
   controller do
+    def new
+      super do
+        @structure_section_page.parent_id = params[:parent_id] if params[:parent_id]
+      end
+    end
+
     def create
       super do |success, failure|
         success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.id) }

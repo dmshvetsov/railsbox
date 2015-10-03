@@ -54,13 +54,13 @@ ActiveRecord::Schema.define(version: 20150928124041) do
     t.string   "slug"
     t.string   "permalink"
     t.integer  "parent_id"
-    t.boolean  "visible"
+    t.boolean  "visible",      default: true
     t.datetime "published_at"
     t.string   "language"
     t.integer  "content_id"
     t.string   "content_type"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "position"
     t.string   "type"
   end

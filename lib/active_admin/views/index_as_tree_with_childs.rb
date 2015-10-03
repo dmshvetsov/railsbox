@@ -93,7 +93,10 @@ module ActiveAdmin
             sort_url += "?" + query_params if query_params
             content_tag :span, '&#x2195;'.html_safe, :class => 'handle', 'data-sort-url' => sort_url
           end
-          actions
+          actions defaults: false do |row|
+            item I18n.t('active_admin.edit'), edit_admin_structure_content_page_path(row, parent_id: params[:categorizer_current_id]), class: 'edit_link member_link'
+            item I18n.t('active_admin.delete'), admin_structure_content_page_path(row), class: 'delete_link member_link', method: :delete
+          end
         end
 
         h2 'Section content'

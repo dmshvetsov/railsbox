@@ -35,7 +35,7 @@ module Railsbox
     config.active_record.raise_in_transactional_callbacks = true
 
     config.generators do |g|
-      g.test_framework :minitest, fixture: false
+      g.test_framework :minitest, fixture: false, spec: true
     end
   end
 end

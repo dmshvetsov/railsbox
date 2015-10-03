@@ -5,7 +5,7 @@ class CreateStructurePages < ActiveRecord::Migration
       t.string :slug
       t.string :permalink
       t.integer :parent_id
-      t.boolean :visible
+      t.boolean :visible, default: true
       t.datetime :published_at
       t.string :language
       t.references :content, polymorphic: true, index: true

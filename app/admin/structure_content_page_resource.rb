@@ -16,11 +16,7 @@ ActiveAdmin.register Structure::ContentPage do
   form do |f|
     f.semantic_errors
     f.inputs do
-      if params[:parent_id]
-        f.input :parent_id, as: :hidden, input_html: { value: params[:parent_id] }
-      else
-        f.input :parent
-      end
+      f.input :parent
       f.input :title
       f.input :slug
       f.input :language
@@ -34,15 +30,21 @@ ActiveAdmin.register Structure::ContentPage do
   end
 
   controller do
+    def new
+      super do
+        @structure_content_page.parent_id = params[:parent_id] if params[:parent_id]
+      end
+    end
+
     def create
       super do |success, failure|
-        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.id) }
+        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id) }
       end
     end
 
     def update
       super do |success, failure|
-        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.id) }
+        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id) }
       end
     end
 
