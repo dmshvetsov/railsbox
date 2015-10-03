@@ -31,15 +31,6 @@ ActiveRecord::Schema.define(version: 20150928124041) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
-  create_table "cars", force: :cascade do |t|
-    t.string   "external_key"
-    t.string   "year"
-    t.string   "make"
-    t.string   "model"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
   create_table "catalog_cars", force: :cascade do |t|
     t.string   "external_key"
     t.string   "make"
@@ -75,13 +66,6 @@ ActiveRecord::Schema.define(version: 20150928124041) do
   end
 
   add_index "structure_pages", ["content_type", "content_id"], name: "index_structure_pages_on_content_type_and_content_id", using: :btree
-
-  create_table "text_pages", force: :cascade do |t|
-    t.string   "title"
-    t.text     "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
