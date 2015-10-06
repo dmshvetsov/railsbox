@@ -6,6 +6,9 @@ module ActiveAdmin
     # respond to title and id
     class Categorizer
 
+      # Id for virtual not persistent root category
+      ROOT_CATEGORY_ID = nil
+
       attr_reader :name, :current_category, :model
 
       def initialize(name, model, current_id, associated_collection)
@@ -13,19 +16,18 @@ module ActiveAdmin
         @model = model.constantize
         @current_id = current_id.to_i if current_id
         @associated_collection = associated_collection
+        @current_category_ancestors_path = [ROOT_CATEGORY_ID]
 
         if @current_id
           @current_category = @model.find(@current_id)
-          @current_category_ancestors_path = @current_category.self_and_ancestors_ids
-        else
-          @current_category_ancestors_path = []
+          @current_category_ancestors_path.concat @current_category.self_and_ancestors_ids
         end
       end
 
       # Tree
       # hash of key-category => value-childrens
       def tree
-        @model.hash_tree
+        { @model.new(id: ROOT_CATEGORY_ID, title: 'Root') => @model.hash_tree }
       end
 
       # Associated collection for current category

@@ -30,7 +30,27 @@ feature 'ManageStructureOfPages' do
     end
   end
 
+  def categorizer_panel
+    find '.table-with-tree__categorizer.panel'
+  end
+
   # Tests
+  scenario 'always show root link for sections' do
+    root_section = create :root_section_page, title: 'Car Catalog'
+    create :section_page, title: '4WD', parent: root_section
+    user = create :user
+    admin_login user
+
+    into_site_structure_page
+    categorizer_panel.must_have_link 'Root', href: admin_structure_section_pages_path
+
+    into_section_page 'Car Catalog'
+    categorizer_panel.must_have_link 'Root', href: admin_structure_section_pages_path
+
+    into_section_page '4WD'
+    categorizer_panel.must_have_link 'Root', href: admin_structure_section_pages_path
+  end
+
   scenario 'create root section' do
     user = create :user
     admin_login user
