@@ -10,8 +10,8 @@ feature 'ManageStructureOfPages' do
     click_link 'Site Structure'
   end
 
-  def into_site_structure_form
-    click_link 'Create Section Page'
+  def into_site_section_form type
+    click_link "Create #{type}"
   end
 
   def into_site_content_form
@@ -56,7 +56,7 @@ feature 'ManageStructureOfPages' do
     admin_login user
 
     into_site_structure_page
-    into_site_structure_form
+    into_site_section_form 'Basic Section'
 
     assert_difference 'Structure::SectionPage.count', 1 do
       fill_in 'structure_section_page[title]', with: 'Car Catalog'
@@ -101,6 +101,49 @@ feature 'ManageStructureOfPages' do
     section.title.must_equal 'Auto Catalog'
   end
 
+  scenario 'create child section' do
+    root_page = create :root_section_page, title: 'Car Catalog'
+    user = create :user
+    admin_login user
+
+    into_site_structure_page
+    into_section_page 'Car Catalog'
+    into_site_section_form 'Basic Section'
+
+    parent_section = find('select[name="structure_section_page[parent_id]"]').value
+    parent_section.must_equal root_page.id.to_s
+
+    assert_difference 'Structure::SectionPage.count', 1 do
+      fill_in 'structure_section_page[title]', with: '4WD'
+      check 'structure_section_page[visible]'
+      submit_form
+    end
+
+    page.must_have_content '4WD'
+    Structure::SectionPage.last.parent_id.must_equal root_page.id
+    current_section.text.must_equal '4WD'
+  end
+
+  scenario 'create section page with content' do
+    user = create :user
+    admin_login user
+
+    into_site_structure_page
+    into_site_section_form 'Basic Section'
+
+    assert_difference 'BasicSection.count', 1 do
+      fill_in 'structure_section_page[title]', with: '4WD'
+      check 'structure_section_page[visible]'
+      fill_in 'structure_section_page[content_attributes][title]', with: '4WD Cars'
+      fill_in 'structure_section_page[content_attributes][description]', with: '4Wheel Drive Hardware Cars'
+      submit_form
+    end
+
+    section_page_content = Structure::SectionPage.last.content
+    section_page_content.title.must_equal '4WD Cars'
+    section_page_content.description.must_equal '4Wheel Drive Hardware Cars'
+  end
+
   scenario 'edit content page' do
     section = create :root_section_page, title: 'Car Catalog'
     content = create :content_page, title: 'Jeep Compass', parent: section
@@ -134,29 +177,6 @@ feature 'ManageStructureOfPages' do
 
     page.wont_have_content 'Jeep Compass'
     # TODO: test current_section
-  end
-
-  scenario 'create child section' do
-    root_page = create :root_section_page, title: 'Car Catalog'
-    user = create :user
-    admin_login user
-
-    into_site_structure_page
-    into_section_page 'Car Catalog'
-    into_site_structure_form
-
-    parent_section = find('select[name="structure_section_page[parent_id]"]').value
-    parent_section.must_equal root_page.id.to_s
-
-    assert_difference 'Structure::SectionPage.count', 1 do
-      fill_in 'structure_section_page[title]', with: '4WD'
-      check 'structure_section_page[visible]'
-      submit_form
-    end
-
-    page.must_have_content '4WD'
-    Structure::SectionPage.last.parent_id.must_equal root_page.id
-    current_section.text.must_equal '4WD'
   end
 
   scenario 'can not create content page without choosing section page' do

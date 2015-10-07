@@ -2,13 +2,25 @@ ActiveAdmin.register Structure::SectionPage do
 
   menu label: 'Site Structure'
 
-  permit_params :title,
-    :slug,
-    :parent_id,
-    :visible,
-    :published_at,
-    :language,
-    :type
+  permit_params do
+    permited = [
+      :title,
+      :slug,
+      :parent_id,
+      :visible,
+      :published_at,
+      :language,
+      :type,
+      :content_type
+    ]
+    if content_class = params.fetch(:structure_section_page, {}).fetch(:content_type, nil)
+      # TODO: unsafe permited params
+      content_params = content_class.constantize.attribute_names
+      permited << { content_attributes: content_params }
+    else
+      permited
+    end
+  end
 
   config.clear_action_items!
   config.filters = false
@@ -22,7 +34,7 @@ ActiveAdmin.register Structure::SectionPage do
   end
 
   action_item 'Create Section', only: :index do
-    link_to 'Create Section Page', new_admin_structure_section_page_path(parent_id: params[:categorizer_current_id])
+    link_to 'Create Basic Section', new_admin_structure_section_page_path(parent_id: params[:categorizer_current_id], content_type: 'BasicSection')
   end
 
 
@@ -35,6 +47,10 @@ ActiveAdmin.register Structure::SectionPage do
       f.input :language
       f.input :visible
       f.input :published_at
+      f.input :content_type, as: :hidden
+    end
+    f.inputs for: :content do |content|
+      content.inputs
     end
     f.actions do
       f.action :submit, as: :input
@@ -46,6 +62,7 @@ ActiveAdmin.register Structure::SectionPage do
     def new
       super do
         @structure_section_page.parent_id = params[:parent_id] if params[:parent_id]
+        @structure_section_page.content = params[:content_type].constantize.new if params[:content_type]
       end
     end
 
