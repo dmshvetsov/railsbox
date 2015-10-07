@@ -38,4 +38,5 @@ end
 
 group :test do
   gem 'minitest-rails-capybara', '2.1.1'
+  gem 'database_cleaner', '1.5.0'
 end
