@@ -54,7 +54,7 @@ ActiveAdmin.register Structure::SectionPage do
     end
     f.actions do
       f.action :submit, as: :input
-      f.action :cancel, as: :link, url: admin_structure_section_pages_path(categorizer_current_id: f.object.parent_id || params[:parent_id]), wrapper_html: { class: 'cancel' }
+      f.action :cancel, as: :link, url: admin_structure_section_pages_path(categorizer_current_id: f.object.id || params[:parent_id]), wrapper_html: { class: 'cancel' }
     end
   end
 

@@ -20,6 +20,14 @@ feature 'ManageStructureOfPages' do
     end
   end
 
+  def into_edit_current_section
+    click_link 'Edit section'
+  end
+
+  def into_edit_content_page content, section
+    find("a[href=\"#{edit_admin_structure_content_page_path(content)}?parent_id=#{section.id}\"]").click
+  end
+
   def current_section
     within '.table-with-tree__categorizer.panel' do
       find :xpath, '//a[@class="active"]'
@@ -88,7 +96,7 @@ feature 'ManageStructureOfPages' do
 
     into_site_structure_page
     into_section_page 'Car Catalog'
-    click_link 'Edit section'
+    into_edit_current_section
 
     fill_in 'structure_section_page[title]', with: 'Auto Catalog'
     submit_form
@@ -148,7 +156,7 @@ feature 'ManageStructureOfPages' do
 
     into_site_structure_page
     into_section_page 'Car Catalog'
-    find("a[href=\"#{edit_admin_structure_content_page_path(content)}?parent_id=#{section.id}\"]").click
+    into_edit_content_page content, section
 
     fill_in 'structure_content_page[title]', with: 'Jeep Compass 2015'
     submit_form
@@ -226,6 +234,35 @@ feature 'ManageStructureOfPages' do
     last_content_page_content = Structure::ContentPage.last.content
     last_content_page_content.title.must_equal 'About'
     last_content_page_content.body.must_equal 'Work in progress'
+  end
+
+  scenario 'Cancel from Section Page form leads to this Section Page in categorizer' do
+    create :root_section_page, title: 'Information'
+    user = create :user
+    admin_login user
+
+    into_site_structure_page
+    into_section_page 'Information'
+    into_edit_current_section
+
+    click_link 'Cancel Section page'
+    current_path.must_equal admin_structure_section_pages_path
+    current_section.text.must_equal 'Information'
+  end
+
+  scenario 'Cancel from Content Page form leads to parent Section Page in categorizer' do
+    section = create :root_section_page, title: 'Information'
+    content = create :content_page, parent: section
+    user = create :user
+    admin_login user
+
+    into_site_structure_page
+    into_section_page 'Information'
+    into_edit_content_page content, section
+
+    click_link 'Cancel Content page'
+    current_path.must_equal admin_structure_section_pages_path
+    current_section.text.must_equal 'Information'
   end
 
 end
