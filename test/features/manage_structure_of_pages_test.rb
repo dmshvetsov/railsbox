@@ -10,12 +10,8 @@ feature 'ManageStructureOfPages' do
     click_link 'Site Structure'
   end
 
-  def into_site_section_form type
+  def into_form type
     click_link "Create #{type}"
-  end
-
-  def into_site_content_form
-    click_link 'Create Content Page'
   end
 
   def into_section_page title
@@ -56,7 +52,7 @@ feature 'ManageStructureOfPages' do
     admin_login user
 
     into_site_structure_page
-    into_site_section_form 'Basic Section'
+    into_form 'Basic Section'
 
     assert_difference 'Structure::SectionPage.count', 1 do
       fill_in 'structure_section_page[title]', with: 'Car Catalog'
@@ -108,7 +104,7 @@ feature 'ManageStructureOfPages' do
 
     into_site_structure_page
     into_section_page 'Car Catalog'
-    into_site_section_form 'Basic Section'
+    into_form 'Basic Section'
 
     parent_section = find('select[name="structure_section_page[parent_id]"]').value
     parent_section.must_equal root_page.id.to_s
@@ -129,7 +125,7 @@ feature 'ManageStructureOfPages' do
     admin_login user
 
     into_site_structure_page
-    into_site_section_form 'Basic Section'
+    into_form 'Basic Section'
 
     assert_difference 'BasicSection.count', 1 do
       fill_in 'structure_section_page[title]', with: '4WD'
@@ -187,14 +183,14 @@ feature 'ManageStructureOfPages' do
     page.wont_have_content 'Create Content Page'
   end
 
-  scenario 'create content in section' do
+  scenario 'create content page in section' do
     root_page = create :root_section_page, title: 'Car Catalog'
     user = create :user
     admin_login user
 
     into_site_structure_page
     into_section_page 'Car Catalog'
-    into_site_content_form
+    into_form 'Basic Page'
 
     parent_section = find('select[name="structure_content_page[parent_id]"]').value
     parent_section.must_equal root_page.id.to_s
@@ -208,6 +204,28 @@ feature 'ManageStructureOfPages' do
     page.must_have_content 'Jeep Compass'
     Structure::ContentPage.last.parent_id.must_equal root_page.id
     current_section.text.must_equal 'Car Catalog'
+  end
+
+  scenario 'create content page with content' do
+    create :root_section_page, title: 'Information'
+    user = create :user
+    admin_login user
+
+    into_site_structure_page
+    into_section_page 'Information'
+    into_form 'Basic Page'
+
+    assert_difference 'BasicPage.count', 1 do
+      fill_in 'structure_content_page[title]', with: 'About company'
+      check 'structure_content_page[visible]'
+      fill_in 'structure_content_page[content_attributes][title]', with: 'About'
+      fill_in 'structure_content_page[content_attributes][body]', with: 'Work in progress'
+      submit_form
+    end
+
+    last_content_page_content = Structure::ContentPage.last.content
+    last_content_page_content.title.must_equal 'About'
+    last_content_page_content.body.must_equal 'Work in progress'
   end
 
 end

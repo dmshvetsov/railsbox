@@ -30,7 +30,7 @@ ActiveAdmin.register Structure::SectionPage do
   index as: :tree_with_childs, content: :content_page
 
   action_item 'Create Content', only: :index, if: proc { params[:categorizer_current_id].present? } do
-    link_to 'Create Content Page', new_admin_structure_content_page_path(parent_id: params[:categorizer_current_id])
+    link_to 'Create Basic Page', new_admin_structure_content_page_path(parent_id: params[:categorizer_current_id], content_type: 'BasicPage')
   end
 
   action_item 'Create Section', only: :index do

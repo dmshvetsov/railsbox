@@ -5,13 +5,25 @@ ActiveAdmin.register Structure::ContentPage do
   config.sort_order = 'position_asc'
   sortable
 
-  permit_params :title,
-    :slug,
-    :parent_id,
-    :visible,
-    :published_at,
-    :language,
-    :type
+  permit_params do
+    permited = [
+      :title,
+      :slug,
+      :parent_id,
+      :visible,
+      :published_at,
+      :language,
+      :type,
+      :content_type
+    ]
+    if content_class = params.fetch(:structure_content_page, {}).fetch(:content_type, nil)
+      # TODO: unsafe permited params
+      content_params = content_class.constantize.attribute_names
+      permited << { content_attributes: content_params }
+    else
+      permited
+    end
+  end
 
   form do |f|
     f.semantic_errors
@@ -22,6 +34,10 @@ ActiveAdmin.register Structure::ContentPage do
       f.input :language
       f.input :visible
       f.input :published_at
+      f.input :content_type, as: :hidden
+    end
+    f.inputs for: :content do |content|
+      content.inputs
     end
     f.actions do
       f.action :submit, as: :input
@@ -33,6 +49,7 @@ ActiveAdmin.register Structure::ContentPage do
     def new
       super do
         @structure_content_page.parent_id = params[:parent_id] if params[:parent_id]
+        @structure_content_page.content = params[:content_type].constantize.new if params[:content_type]
       end
     end
 
@@ -54,6 +71,5 @@ ActiveAdmin.register Structure::ContentPage do
       end
     end
   end
-
 
 end
