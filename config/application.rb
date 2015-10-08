@@ -36,6 +36,7 @@ module Railsbox
 
     config.generators do |g|
       g.test_framework :minitest, fixture: false, spec: true
+      g.javascript_engine :js
     end
   end
 end

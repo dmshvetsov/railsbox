@@ -227,7 +227,6 @@ DEPENDENCIES
   acts_as_list (= 0.7.2)
   byebug
   closure_tree (= 5.2.0)
-  coffee-rails (= 4.1.0)
   database_cleaner (= 1.5.0)
   devise (= 3.5.1)
   factory_girl_rails (= 4.5.0)

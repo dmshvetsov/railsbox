@@ -9,8 +9,6 @@ gem 'rails', '4.2.3'
 gem 'pg'
 gem 'upsert', '2.1.0'
 
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '4.1.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '4.0.4'
 
