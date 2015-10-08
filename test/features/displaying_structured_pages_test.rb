@@ -2,6 +2,22 @@ require 'test_helper'
 
 feature 'Displaying structured pages content of the site' do
 
+  scenario 'display page title in browser title' do
+    create :root_section_page, title: 'Company Information', slug: 'company-information', permalink: 'company-information'
+
+    visit '/company-information'
+    page.title.must_match 'Company Information'
+  end
+
+  scenario 'display page title in browser title for nested page' do
+    root_section = create :root_section_page, slug: 'company-information', permalink: 'company-information'
+    create :root_section_page, title: 'About Us', parent: root_section, slug: 'about', permalink: 'company-information/about'
+
+    visit '/company-information/about'
+    page.title.must_match 'About Us'
+
+  end
+
   scenario 'display content of root basic section' do
     content = create :basic_section, title: 'Information', description: 'Information section, there you can find usefull information about our company'
     create :root_section_page, content: content, slug: 'company-information', permalink: 'company-information'
