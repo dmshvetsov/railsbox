@@ -46,6 +46,10 @@ ActiveAdmin.register Structure::ContentPage do
   end
 
   controller do
+    def find_resource
+      scoped_collection.friendly.find(params[:id])
+    end
+
     def new
       super do
         @structure_content_page.parent_id = params[:parent_id] if params[:parent_id]

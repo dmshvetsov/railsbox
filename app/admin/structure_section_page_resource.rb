@@ -59,6 +59,10 @@ ActiveAdmin.register Structure::SectionPage do
   end
 
   controller do
+    def find_resource
+      scoped_collection.friendly.find(params[:id])
+    end
+
     def new
       super do
         @structure_section_page.parent_id = params[:parent_id] if params[:parent_id]

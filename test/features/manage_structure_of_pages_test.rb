@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'support/active_admin_helper'
 
-feature 'ManageStructureOfPages' do
+feature 'Manage structure of the sites pages' do
 
   include ActiveAdminHelper
 

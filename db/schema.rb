@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006135942) do
+ActiveRecord::Schema.define(version: 20151008144418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20151006135942) do
   end
 
   add_index "structure_pages", ["content_type", "content_id"], name: "index_structure_pages_on_content_type_and_content_id", using: :btree
+  add_index "structure_pages", ["slug"], name: "index_structure_pages_on_slug", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
