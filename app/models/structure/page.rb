@@ -17,7 +17,7 @@ module Structure
     before_create :set_default_published_at
 
     # Let Rails to know how to build polymorphic Content
-    def build_content attr = {}
+    def build_content(attr = {})
       self.content = content_type.constantize.new(attr)
     end
 
