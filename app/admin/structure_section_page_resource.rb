@@ -27,16 +27,23 @@ ActiveAdmin.register Structure::SectionPage do
   config.sort_order = 'position_asc'
   sortable
 
-  index as: :tree_with_childs, content: :content_page
+  index as: :tree_with_childs, content: 'Structure::ContentPage'
 
-  action_item 'Create Content', only: :index, if: proc { params[:categorizer_current_id].present? } do
-    link_to 'Create Basic Page', new_admin_structure_content_page_path(parent_id: params[:categorizer_current_id], content_type: 'BasicPage')
+  # Content create buttons
+  Structure.content_models.each do |model_string|
+    action_item model_string, only: :index do
+      link_to "Create #{model_string.constantize.model_name.human}",
+        new_admin_structure_content_page_path(parent_id: params[:categorizer_current_id], content_type: model_string)
+    end
   end
 
-  action_item 'Create Section', only: :index do
-    link_to 'Create Basic Section', new_admin_structure_section_page_path(parent_id: params[:categorizer_current_id], content_type: 'BasicSection')
+  # Section create buttons
+  Structure.section_models.each do |model_string|
+    action_item model_string, only: :index do
+      link_to "Create #{model_string.constantize.model_name.human}",
+        new_admin_structure_section_page_path(parent_id: params[:categorizer_current_id], content_type: model_string)
+    end
   end
-
 
   form do |f|
     f.semantic_errors

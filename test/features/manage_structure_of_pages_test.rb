@@ -60,7 +60,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_form 'Basic Section'
+    into_form 'Basic section'
 
     assert_difference 'Structure::SectionPage.count', 1 do
       fill_in 'structure_section_page[title]', with: 'Car Catalog'
@@ -70,6 +70,18 @@ feature 'Manage structure of the sites pages' do
 
     page.must_have_content 'Car Catalog'
     current_section.text.must_equal 'Car Catalog'
+  end
+
+  scenario 'display root content pages in Root of site structure' do
+    skip 'with virtual root page this will not work, will work with real root per lang page'
+    user = create :user
+    admin_login user
+
+    create(:content_page, parent_id: nil, title: 'How to make order')
+
+    into_site_structure_page
+    current_section.text.must_equal 'Root'
+    page.must_have_content 'How to make order'
   end
 
   scenario 'delete section' do
@@ -112,7 +124,7 @@ feature 'Manage structure of the sites pages' do
 
     into_site_structure_page
     into_section_page 'Car Catalog'
-    into_form 'Basic Section'
+    into_form 'Basic section'
 
     parent_section = find('select[name="structure_section_page[parent_id]"]').value
     parent_section.must_equal root_page.id.to_s
@@ -133,7 +145,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_form 'Basic Section'
+    into_form 'Basic section'
 
     assert_difference 'BasicSection.count', 1 do
       fill_in 'structure_section_page[title]', with: '4WD'
@@ -153,21 +165,21 @@ feature 'Manage structure of the sites pages' do
     admin_login user
     into_site_structure_page
 
-    into_form 'Basic Section'
+    into_form 'Basic section'
     fill_in 'structure_section_page[title]', with: 'Car catalog'
     fill_in 'structure_section_page[content_attributes][title]', with: 'Car catalog'
     submit_form
 
     current_section.text.must_equal 'Car catalog'
 
-    into_form 'Basic Section'
+    into_form 'Basic section'
     fill_in 'structure_section_page[title]', with: 'SVU'
     fill_in 'structure_section_page[content_attributes][title]', with: 'Sport utility vehicle'
     submit_form
 
     current_section.text.must_equal 'SVU'
 
-    into_form 'Basic Page'
+    into_form 'Basic page'
     fill_in 'structure_content_page[title]', with: 'Jeep Compass'
     fill_in 'structure_content_page[content_attributes][title]', with: 'Jeep Compass'
     submit_form
@@ -269,7 +281,7 @@ feature 'Manage structure of the sites pages' do
 
     into_site_structure_page
     into_section_page 'Car Catalog'
-    into_form 'Basic Page'
+    into_form 'Basic page'
 
     parent_section = find('select[name="structure_content_page[parent_id]"]').value
     parent_section.must_equal root_page.id.to_s
@@ -292,7 +304,7 @@ feature 'Manage structure of the sites pages' do
 
     into_site_structure_page
     into_section_page 'Information'
-    into_form 'Basic Page'
+    into_form 'Basic page'
 
     assert_difference 'BasicPage.count', 1 do
       fill_in 'structure_content_page[title]', with: 'About company'

@@ -18,7 +18,7 @@ module ActiveAdmin
         div class: 'table-with-tree__collection' do
           build_current_category_panel if categorizer_current_id
           build_childs_table(categorizer_current_id)
-          build_content_table(categorizer_current_id) if @page_presenter[:content] && categorizer_current_id
+          build_content_table(categorizer_current_id) if @page_presenter[:content]
         end
 
         div class: 'table-with-tree__clearfix'
@@ -77,7 +77,11 @@ module ActiveAdmin
       end
 
       def build_content_table(categorizer_current_id)
-        content = @categorizer.current_category.send(@page_presenter[:content].to_s.pluralize)
+        if @categorizer.current_category
+          content = @categorizer.current_category.send(@page_presenter[:content].to_s.demodulize.underscore.pluralize)
+        else
+          content = @page_presenter[:content].to_s.constantize.roots
+        end
 
         content_presenter = ActiveAdmin::PagePresenter.new as: :table do
           selectable_column
