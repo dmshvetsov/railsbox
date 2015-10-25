@@ -21,14 +21,15 @@ module Structure
 
     def update(attr)
       if @page.update(attr) && structure_changed?(attr)
-        set_permalink_for(@page, @page.slug)
+        new_permalink = @page.root? ? @page.slug : [@page.parent.permalink, @page.slug].join('/')
+        set_permalink_for(@page, new_permalink)
       end
     end
 
     private
 
     def structure_changed?(attr)
-      attr.has_key?(:slug) || attr.has_key?(:parent_id)
+      attr.has_key?(:slug) || attr.has_key?(:parent_id) || attr.has_key?(:parent)
     end
 
     def set_permalink_for(page, new_permalink)

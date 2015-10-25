@@ -5,21 +5,22 @@
 #
 # Usage:
 #
-#   Structure::PageCreator.for(page_params).create
+#   Structure::PageCreator.for(Structure::SectionPage, page_params).create
 #
 module Structure
   class PageCreator
 
-    def self.for(attr)
-      new(attr)
+    def self.for(model, attr)
+      new(model, attr)
     end
 
-    def initialize(attr)
+    def initialize(model, attr)
+      @model = model
       @attr = attr
     end
 
     def create
-      page = Page.create(@attr)
+      page = @model.create(@attr)
       page.permalink = page.root? ? page.slug : "#{page.parent.permalink}/#{page.slug}"
       page.save
       page

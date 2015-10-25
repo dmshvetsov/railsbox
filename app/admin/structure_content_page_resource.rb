@@ -51,20 +51,24 @@ ActiveAdmin.register Structure::ContentPage do
     end
 
     def new
-      super do
+      new! do
         @structure_content_page.parent_id = params[:parent_id] if params[:parent_id]
         @structure_content_page.content = params[:content_type].constantize.new if params[:content_type]
       end
     end
 
     def create
-      super do |success, failure|
+      @structure_content_page = Structure::PageCreator.for(end_of_association_chain, *resource_params).create
+
+      create! do |success, failure|
         success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id) }
       end
     end
 
     def update
-      super do |success, failure|
+      @structure_content_page = Structure::PageUpdater.for(resource).update(*resource_params)
+
+      update! do |success, failure|
         success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id) }
       end
     end

@@ -148,6 +148,77 @@ feature 'Manage structure of the sites pages' do
     section_page_content.description.must_equal '4Wheel Drive Hardware Cars'
   end
 
+  scenario 'create structure of pages' do
+    user = create(:user)
+    admin_login user
+    into_site_structure_page
+
+    into_form 'Basic Section'
+    fill_in 'structure_section_page[title]', with: 'Car catalog'
+    fill_in 'structure_section_page[content_attributes][title]', with: 'Car catalog'
+    submit_form
+
+    current_section.text.must_equal 'Car catalog'
+
+    into_form 'Basic Section'
+    fill_in 'structure_section_page[title]', with: 'SVU'
+    fill_in 'structure_section_page[content_attributes][title]', with: 'Sport utility vehicle'
+    submit_form
+
+    current_section.text.must_equal 'SVU'
+
+    into_form 'Basic Page'
+    fill_in 'structure_content_page[title]', with: 'Jeep Compass'
+    fill_in 'structure_content_page[content_attributes][title]', with: 'Jeep Compass'
+    submit_form
+
+    Structure::Page.find_by(slug: 'car-catalog').permalink.must_equal 'car-catalog'
+    Structure::Page.find_by(slug: 'svu').permalink.must_equal 'car-catalog/svu'
+    Structure::Page.find_by(slug: 'jeep-compass').permalink.must_equal 'car-catalog/svu/jeep-compass'
+  end
+
+  scenario 'change parent of content page' do
+    user = create(:user)
+    admin_login user
+
+    catalog = create(:section_page, title: 'Car catalog', slug: 'car-catalog', permalink: 'car-catalog')
+    catalog_section = create(:section_page, title: 'SVU', slug: 'svu', permalink: 'car-catalog/svu', parent: catalog)
+    content_page = create(:content_page, title: 'Jeep Compass', slug: 'compass', permalink: 'car-catalog/svu/compass', parent: catalog_section)
+
+    into_site_structure_page
+    into_section_page 'Car catalog'
+    into_section_page 'SVU'
+    into_edit_content_page content_page, catalog_section
+
+    select 'Car catalog', from: 'structure_content_page[parent_id]'
+    submit_form
+
+    Structure::Page.find_by(slug: 'car-catalog').permalink.must_equal 'car-catalog'
+    Structure::Page.find_by(slug: 'svu').permalink.must_equal 'car-catalog/svu'
+    Structure::Page.find_by(slug: 'compass').permalink.must_equal 'car-catalog/compass'
+  end
+
+  scenario 'change parent of section page with content page' do
+    user = create(:user)
+    admin_login user
+
+    catalog = create(:section_page, title: 'Car catalog', slug: 'car-catalog', permalink: 'car-catalog')
+    catalog_section = create(:section_page, title: 'SVU', slug: 'svu', permalink: 'car-catalog/svu', parent: catalog)
+    create(:section_page, title: 'Jeep Compass', slug: 'compass', permalink: 'car-catalog/svu/compass', parent: catalog_section)
+
+    into_site_structure_page
+    into_section_page 'Car catalog'
+    into_section_page 'SVU'
+    into_edit_current_section
+
+    select nil, from: 'structure_section_page[parent_id]'
+    submit_form
+
+    Structure::Page.find_by(slug: 'car-catalog').permalink.must_equal 'car-catalog'
+    Structure::Page.find_by(slug: 'svu').permalink.must_equal 'svu'
+    Structure::Page.find_by(slug: 'compass').permalink.must_equal 'svu/compass'
+  end
+
   scenario 'edit content page' do
     section = create :root_section_page, title: 'Car Catalog'
     content = create :content_page, title: 'Jeep Compass', parent: section
