@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   devise_for :users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  get '*permalink', to: 'structure/pages#show', format: false
+  root 'site#main'
+  get '*permalink', to: 'structure/pages#show', format: false, as: 'page'
 
 end

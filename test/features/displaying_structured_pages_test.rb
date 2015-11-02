@@ -15,7 +15,6 @@ feature 'Displaying structured pages content of the site' do
 
     visit '/company-information/about'
     page.title.must_match 'About Us'
-
   end
 
   scenario 'display content of root basic section' do
@@ -24,7 +23,6 @@ feature 'Displaying structured pages content of the site' do
 
     visit '/company-information'
     find('h1').text.must_equal content.title
-    page.must_have_content content.description
   end
 
   scenario 'display content of child basic section' do
@@ -34,7 +32,6 @@ feature 'Displaying structured pages content of the site' do
 
     visit '/car-catalog/sports-cars'
     find('h1').text.must_equal content.title
-    page.must_have_content content.description
   end
 
   scenario 'display content of root basic page' do
@@ -43,7 +40,6 @@ feature 'Displaying structured pages content of the site' do
 
     visit '/about'
     find('h1').text.must_equal content.title
-    page.must_have_content content.body
   end
 
   scenario 'display content of nested in section basic page' do
@@ -53,7 +49,6 @@ feature 'Displaying structured pages content of the site' do
 
     visit '/information/about'
     find('h1').text.must_equal content.title
-    page.must_have_content content.body
   end
 
 end

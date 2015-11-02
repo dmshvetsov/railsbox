@@ -8,8 +8,16 @@
 </head>
 <body>
 
-  <h1><%= @page.content.title %></h1>
-  <%= yield %>
+  <%= render partial: 'structure/menus/main_menu', locals: { tree: Structure::MainMenu.tree } %>
+
+  <% if current_page?(root_path) %>
+    <h1>Ruby on Rails sandbox</h1>
+  <% else %>
+    <h1><%= @page.content.title %></h1>
+    <%= yield %>
+  <% end %>
+
+  <%= console %>
 
 </body>
 </html>

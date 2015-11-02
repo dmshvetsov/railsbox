@@ -1,0 +1,5 @@
+<ul>
+  <% tree.each do |item, childs| %>
+    <%= render partial: 'structure/menus/main_menu_item', locals: { item: item, childs: childs } %>
+  <% end %>
+</ul>
