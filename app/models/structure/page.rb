@@ -16,6 +16,10 @@ module Structure
     # Callbacks
     before_create :set_default_published_at
 
+    scope :is_published, proc { where('published_at < ?', Time.zone.now) }
+    scope :is_visible, proc { where(visible: true) }
+    scope :is_public, proc { is_published.is_visible }
+
     # Let Rails to know how to build polymorphic Content
     def build_content(attr = {})
       self.content = content_type.constantize.new(attr)

@@ -31,6 +31,7 @@ module Structure
       def build_menu_items_tree(pages)
         result = []
         pages.each do |page, childs|
+          next unless page.public?
           children = (@options[:expand_all] || in_current_path?(page)) ? self.build_menu_items_tree(childs) : []
           result << build_menu_item(page, children)
         end
