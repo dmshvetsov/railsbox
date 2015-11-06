@@ -27,7 +27,7 @@ module ActiveAdmin
       # Tree
       # hash of key-category => value-childrens
       def tree
-        { @model.new(id: ROOT_CATEGORY_ID, title: 'Root') => @model.hash_tree }
+        { @model.new(id: ROOT_CATEGORY_ID, title: 'Root') => @model.where(type: @model.name).hash_tree }
       end
 
       # Associated collection for current category
