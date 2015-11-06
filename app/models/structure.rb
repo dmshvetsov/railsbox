@@ -1,7 +1,11 @@
 module Structure
 
-  mattr_accessor :section_models, :content_models do
-    []
+  def self.content_models
+    ['BasicPage', 'Catalog::Car']
+  end
+
+  def self.section_models
+    ['BasicSection']
   end
 
   def self.table_name_prefix

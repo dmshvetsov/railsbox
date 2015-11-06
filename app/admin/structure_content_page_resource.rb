@@ -27,7 +27,7 @@ ActiveAdmin.register Structure::ContentPage do
 
   form do |f|
     f.semantic_errors
-    f.inputs do
+    f.inputs f.object.model_name.human do
       f.input :parent
       f.input :title
       f.input :slug
@@ -36,7 +36,7 @@ ActiveAdmin.register Structure::ContentPage do
       f.input :published_at
       f.input :content_type, as: :hidden
     end
-    f.inputs for: :content do |content|
+    f.inputs f.object.content.class.model_name.human, for: :content do |content|
       content.inputs
     end
     f.actions do
