@@ -24,6 +24,7 @@ module Structure
         new_permalink = @page.root? ? @page.slug : [@page.parent.permalink, @page.slug].join('/')
         set_permalink_for(@page, new_permalink)
       end
+      @page
     end
 
     private
