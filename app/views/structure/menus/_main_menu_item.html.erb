@@ -1,5 +1,5 @@
 <li>
-  <%= link_to main_menu_item.page.title, page_path(main_menu_item.page.permalink) %>
+  <%= link_to main_menu_item.page.title, page_path(main_menu_item.page.permalink), class: "#{'active' if main_menu_item.active?}" %>
   <% if main_menu_item.children.any? %>
     <ul>
       <%= render main_menu_item.children %>
