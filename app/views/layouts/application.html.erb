@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <%= render partial: 'structure/menus/main_menu', locals: { tree: Structure::MainMenu.tree } %>
+  <%= render Structure::MainMenu.tree %>
 
   <% if current_page?(root_path) %>
     <h1>Ruby on Rails sandbox</h1>

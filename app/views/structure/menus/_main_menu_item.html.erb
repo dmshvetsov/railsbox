@@ -1,4 +1,8 @@
 <li>
-  <%= link_to item.item.title, page_path(item.item.permalink) %>
-  <%= render partial: 'structure/menus/main_menu', locals: { tree: childs } if childs %>
+  <%= link_to main_menu_item.page.title, page_path(main_menu_item.page.permalink) %>
+  <% if main_menu_item.children.any? %>
+    <ul>
+      <%= render main_menu_item.children %>
+    </ul>
+  <% end %>
 </li>
