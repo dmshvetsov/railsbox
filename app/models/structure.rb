@@ -5,7 +5,7 @@ module Structure
   end
 
   def self.section_models
-    ['BasicSection']
+    ['BasicSection', 'Catalog::Section']
   end
 
   def self.table_name_prefix
