@@ -19,7 +19,7 @@ gem 'devise', '3.5.1'
 
 # ActiveRecord extensions
 gem 'acts_as_list', '0.7.2'
-gem 'closure_tree', '5.2.0'
+gem 'closure_tree', '6.0.0'
 gem 'friendly_id', '5.1.0'
 
 
