@@ -4,11 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def menu(type = 'main', opts = {})
-    if type.to_s == 'main'
-      menu_class = Structure::MainMenu
-    else
-      menu_class = "#{type.to_s.classify}Menu".constantize
-    end
+    menu_class = "#{type.to_s.classify}Menu".constantize
     menu_class.new(params, opts)
   end
   helper_method :menu

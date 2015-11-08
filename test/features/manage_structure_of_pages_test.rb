@@ -28,17 +28,26 @@ feature 'Manage structure of the sites pages' do
     find("a[href=\"#{edit_admin_structure_content_page_path(content)}?parent_id=#{section.id}\"]").click
   end
 
-  def current_section
-    within '.table-with-tree__categorizer.panel' do
-      find :xpath, '//a[@class="active"]'
-    end
-  end
-
   def categorizer_panel
     find '.table-with-tree__categorizer.panel'
   end
 
+  def current_section
+    within categorizer_panel do
+      find :xpath, '//a[@class="active"]'
+    end
+  end
+
   # Tests
+  scenario 'Main menu is selected by default' do
+    create :root_section_page, title: 'Car Catalog', menu: 'MainMenu'
+    user = create :user
+    admin_login user
+
+    into_site_structure_page
+    current_section.text.must_equal '- Main Menu'
+  end
+
   scenario 'always show root link for sections' do
     root_section = create :root_section_page, title: 'Car Catalog'
     create :section_page, title: '4WD', parent: root_section
@@ -46,13 +55,13 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    categorizer_panel.must_have_link 'Root', href: admin_structure_section_pages_path
+    categorizer_panel.must_have_link 'Main Menu', href: admin_structure_section_pages_path(menu: 'MainMenu')
 
     into_section_page 'Car Catalog'
-    categorizer_panel.must_have_link 'Root', href: admin_structure_section_pages_path
+    categorizer_panel.must_have_link 'Main Menu', href: admin_structure_section_pages_path(menu: 'MainMenu')
 
     into_section_page '4WD'
-    categorizer_panel.must_have_link 'Root', href: admin_structure_section_pages_path
+    categorizer_panel.must_have_link 'Main Menu', href: admin_structure_section_pages_path(menu: 'MainMenu')
   end
 
   scenario 'create root section' do
@@ -328,7 +337,7 @@ feature 'Manage structure of the sites pages' do
     into_section_page 'Information'
     into_edit_current_section
 
-    click_link 'Cancel Section page'
+    click_link 'Cancel'
     current_path.must_equal admin_structure_section_pages_path
     current_section.text.must_equal 'Information'
   end
@@ -343,7 +352,7 @@ feature 'Manage structure of the sites pages' do
     into_section_page 'Information'
     into_edit_content_page content, section
 
-    click_link 'Cancel Content page'
+    click_link 'Cancel'
     current_path.must_equal admin_structure_section_pages_path
     current_section.text.must_equal 'Information'
   end

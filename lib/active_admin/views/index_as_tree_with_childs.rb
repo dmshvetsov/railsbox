@@ -9,7 +9,7 @@ module ActiveAdmin
         categorizer_current_id = params['categorizer_current_id']
 
         resource_name = active_admin_config.resource_name
-        @categorizer = Categorizer.new(resource_name.singular, resource_name.name, categorizer_current_id, collection)
+        @categorizer = Categorizer.new(resource_name.singular, resource_name.name, categorizer_current_id, params[:menu], collection)
 
         panel 'Sections', class: 'table-with-tree__categorizer' do
           build_tree @categorizer.tree
@@ -36,7 +36,7 @@ module ActiveAdmin
 
       def build_item item, childs
         title = @categorizer.title_for(item, childs)
-        url = url_for("categorizer_current_id" => item.id)
+        url = url_for("categorizer_current_id" => item.id, "menu" => item.menu)
         css_class = @categorizer.css_class_for(item)
 
         li do
@@ -61,7 +61,7 @@ module ActiveAdmin
       end
 
       def build_childs_table(categorizer_current_id)
-        sql = { parent_id: categorizer_current_id }
+        sql = { parent_id: categorizer_current_id, menu: params[:menu] }
         childs_categories = @collection.where sql
 
         childs_categories_presenter = ActiveAdmin::PagePresenter.new as: :table do
@@ -78,9 +78,9 @@ module ActiveAdmin
 
       def build_content_table(categorizer_current_id)
         if @categorizer.current_category
-          content = @categorizer.current_category.send(@page_presenter[:content].to_s.demodulize.underscore.pluralize)
+          content = @categorizer.current_category.send(@page_presenter[:content].to_s.demodulize.underscore.pluralize).where(menu: params[:menu])
         else
-          content = @page_presenter[:content].to_s.constantize.roots
+          content = @page_presenter[:content].to_s.constantize.where(menu: params[:menu]).roots
         end
 
         content_presenter = ActiveAdmin::PagePresenter.new as: :table do

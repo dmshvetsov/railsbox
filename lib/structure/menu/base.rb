@@ -15,7 +15,15 @@ module Structure
       def initialize(controller_parameters, menu_options)
         @params = controller_parameters
         @options = menu_options.reverse_merge(DEFAULT_OPTIONS)
-        @items = build_menu_items_tree(Structure::Page.hash_tree(limit_depth: @options[:limit_depth]))
+        @items = build_menu_items_tree(self.class.pages.hash_tree(limit_depth: @options[:limit_depth]))
+      end
+
+      def self.pages
+        Structure::Page.where(menu: self.name)
+      end
+
+      def self.in_categorizer?
+        true
       end
 
       def to_partial_path

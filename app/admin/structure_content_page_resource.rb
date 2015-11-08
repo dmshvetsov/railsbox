@@ -14,7 +14,8 @@ ActiveAdmin.register Structure::ContentPage do
       :published_at,
       :language,
       :type,
-      :content_type
+      :content_type,
+      :menu
     ]
     if content_class = params.fetch(:structure_content_page, {}).fetch(:content_type, nil)
       # TODO: unsafe permited params
@@ -35,13 +36,14 @@ ActiveAdmin.register Structure::ContentPage do
       f.input :visible
       f.input :published_at
       f.input :content_type, as: :hidden
+      f.input :menu, as: :hidden
     end
     f.inputs f.object.content.class.model_name.human, for: :content do |content|
       content.inputs
     end
     f.actions do
-      f.action :submit, as: :input
-      f.action :cancel, as: :link, url: admin_structure_section_pages_path(categorizer_current_id: f.object.parent_id || params[:parent_id]), wrapper_html: { class: 'cancel' }
+      f.action :submit
+      f.cancel_link(admin_structure_section_pages_path(categorizer_current_id: (f.object.parent_id || params[:parent_id]), menu: params[:menu]))
     end
   end
 
@@ -52,6 +54,7 @@ ActiveAdmin.register Structure::ContentPage do
 
     def new
       new! do
+        @structure_content_page.menu = params[:menu]
         @structure_content_page.parent_id = params[:parent_id] if params[:parent_id]
         @structure_content_page.content = params[:content_type].constantize.new if params[:content_type]
       end
@@ -61,7 +64,7 @@ ActiveAdmin.register Structure::ContentPage do
       @structure_content_page = Structure::PageCreator.for(end_of_association_chain, *resource_params).create
 
       create! do |success, failure|
-        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id) }
+        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id, menu: resource.menu) }
       end
     end
 
@@ -69,13 +72,13 @@ ActiveAdmin.register Structure::ContentPage do
       @structure_content_page = Structure::PageUpdater.for(resource).update(*resource_params)
 
       update! do |success, failure|
-        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id) }
+        success.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id, menu: resource.menu) }
       end
     end
 
     def destroy
       destroy! do |format|
-        format.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id) }
+        format.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id, menu: resource.menu) }
       end
     end
   end

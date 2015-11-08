@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106064856) do
+ActiveRecord::Schema.define(version: 20151106074349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20151106064856) do
     t.datetime "updated_at",                  null: false
     t.integer  "position"
     t.string   "type"
+    t.string   "menu"
   end
 
   add_index "structure_pages", ["content_type", "content_id"], name: "index_structure_pages_on_content_type_and_content_id", using: :btree
