@@ -22,6 +22,9 @@ gem 'acts_as_list', '0.7.2'
 gem 'closure_tree', '6.0.0'
 gem 'friendly_id', '5.1.0'
 
+group :development do
+  gem 'rack-mini-profiler', '0.9.7', require: false
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
