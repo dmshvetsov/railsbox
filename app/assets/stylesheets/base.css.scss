@@ -2,3 +2,15 @@
   font-weight: bold;
   color: black;
 }
+.page--container {
+  max-width: 960px;
+  padding: 0px 32px;
+  margin: 0px auto;
+}
+.page--title {
+  font-size: 2em;
+
+  a {
+    text-decoration: none;
+  }
+}

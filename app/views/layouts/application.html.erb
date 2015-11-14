@@ -8,24 +8,28 @@
 </head>
 <body>
 
-  <%= link_to 'RAILSBOX', root_path %>
+  <div class="page--container">
+    <div class="page--title">
+      <%= link_to 'RAILSBOX', root_path %>
+    </div>
 
-  <%= render menu %>
+    <%= render menu %>
+    <%= render menu :catalog %>
 
-  <%= render breadcrumbs %>
+    <%= render breadcrumbs %>
 
-  <%= render menu :catalog %>
+    <% if current_page?(root_path) %>
+      <h1>Ruby on Rails sandbox</h1>
+    <% else %>
+      <h1><%= @page.content.title %></h1>
+      <%= yield %>
+    <% end %>
 
-  <% if current_page?(root_path) %>
-    <h1>Ruby on Rails sandbox</h1>
-  <% else %>
-    <h1><%= @page.content.title %></h1>
-    <%= yield %>
-  <% end %>
+    <%= render breadcrumbs %>
+    <%= render menu :footer %>
 
-  <%= render menu :footer %>
-
-  <%= console %>
+    <%= console %>
+  </div>
 
 </body>
 </html>
