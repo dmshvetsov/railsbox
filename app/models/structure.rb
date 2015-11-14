@@ -12,4 +12,9 @@ module Structure
     'structure_'
   end
 
+  # The mock of the virtual non persisted root page
+  def self.root_page
+    @root_page ||= Page.new(title: I18n.t('structure.pages.root'), slug: '', permalink: '')
+  end
+
 end

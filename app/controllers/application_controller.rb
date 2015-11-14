@@ -9,4 +9,14 @@ class ApplicationController < ActionController::Base
   end
   helper_method :menu
 
+  def breadcrumbs
+    Structure::Breadcrumbs::Base.new(@page)
+  end
+  helper_method :breadcrumbs
+
+  def root_page
+    Structure.root_page
+  end
+  helper_method :root_page
+
 end
