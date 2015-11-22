@@ -3,8 +3,10 @@ require 'test_helper'
 describe Structure::PagesController do
 
   describe 'GET #show' do
+
     before do
-      @about_content = create :basic_page, title: 'About us', body: 'Work in progress'
+      @about_content = create(:basic_page, title: 'About us', body: 'Work in progress')
+      # @about_concept = concept('basic_page/cell', @about_content)
       @about_page = create :content_page, slug: 'about', permalink: 'about', content: @about_content
     end
 
@@ -18,14 +20,14 @@ describe Structure::PagesController do
       assert_equal @about_page, assigns(:page)
     end
 
-    it 'assigns requested page content association as @association_model_name' do
+    it 'assigns requested page content association concept as @concept' do
       get :show, permalink: 'about'
-      assert_equal @about_content, assigns(:basic_page)
+      assert_instance_of BasicPage::Cell, assigns(:concept)
     end
 
-    it 'render template of content' do
+    it 'render template pages/show' do
       get :show, permalink: 'about'
-      assert_template 'basic_pages/show'
+      assert_template 'pages/show'
     end
 
     it 'render application layout' do

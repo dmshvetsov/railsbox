@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 #ruby=2.2.2
 #ruby-gemset=railsbox
 
-
 gem 'rails', '4.2.3'
 
 # Use postgresql as the database for Active Record
@@ -21,6 +20,9 @@ gem 'devise', '3.5.1'
 gem 'acts_as_list', '0.7.2'
 gem 'closure_tree', '6.0.0'
 gem 'friendly_id', '5.1.0'
+
+gem 'cells', '4.0.2'
+gem 'cells-erb'
 
 group :development do
   gem 'rack-mini-profiler', '0.9.7', require: false
