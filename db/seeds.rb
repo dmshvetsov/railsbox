@@ -27,7 +27,10 @@ if Rails.env == 'development'
       { title: 'draft', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'draft page') } => {},
     },
     { title: 'About', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'About Us') } => {},
-    { title: 'Contacts', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'Contacts') } => {}
+    { title: 'Contacts', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'Contacts') } => {},
+    { title: 'Documentation', type: 'Structure::SectionPage', menu: 'MainMenu', content: BasicSection.create(title: 'Documentation') } => {
+      { title: 'License', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'License') } => {}
+    }
   }.each { |page, childs| create_page_stucture(page[:type], page, childs) }
 
 end
