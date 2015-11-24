@@ -2,6 +2,7 @@ module Structure
   class Page < ::ActiveRecord::Base
 
     include FriendlyId
+    include ::Cell::RailsExtensions::ActionController
 
     has_closure_tree order: :position
     acts_as_list
@@ -43,6 +44,10 @@ module Structure
 
     def public?
       self.visible && self.published?
+    end
+
+    def build_concept
+      concept("#{content_type}::Cell", content, page: self)
     end
 
     private

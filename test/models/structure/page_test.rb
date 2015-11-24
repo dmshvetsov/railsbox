@@ -114,4 +114,11 @@ class Structure::PageTest < ActiveSupport::TestCase
   end
   # End of visibility and publicity tests
 
+  # build_concept
+  def test_build_concept_return_content_concept_class
+    page = build :page, content_type: 'BasicSection'
+    assert_equal 'BasicSection::Cell', page.build_concept.class.name
+  end
+  # End build_concept
+
 end
