@@ -1,9 +1,15 @@
 class BasicPage::Cell < Cell::Concept
 
-  property :body
+  property :content
 
   def show
     render
+  end
+
+  private
+
+  def body
+    content.body
   end
 
 end

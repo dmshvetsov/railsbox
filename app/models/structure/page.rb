@@ -47,7 +47,7 @@ module Structure
     end
 
     def build_concept
-      concept("#{content_type}::Cell", content, page: self)
+      concept("#{content_type}::Cell", self)
     end
 
     private

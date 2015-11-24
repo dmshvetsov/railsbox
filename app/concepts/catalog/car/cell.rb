@@ -1,7 +1,6 @@
 class Catalog::Car::Cell < Cell::Concept
 
-  property :year
-  property :make
+  property :content
 
   def show
     render
@@ -10,6 +9,15 @@ class Catalog::Car::Cell < Cell::Concept
   private
 
   def _model
-    model.model
+    content.model
   end
+
+  def year
+    content.year
+  end
+
+  def make
+    content.make
+  end
+
 end

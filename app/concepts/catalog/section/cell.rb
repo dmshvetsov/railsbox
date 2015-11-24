@@ -2,6 +2,7 @@ class Catalog::Section::Cell < Cell::Concept
 
   include ActionView::Helpers::UrlHelper
 
+  property :content
   property :title
 
   def show
@@ -14,21 +15,15 @@ class Catalog::Section::Cell < Cell::Concept
 
   private
 
-  def page
-    @options[:page]
-  end
-
   def children
-    if page
-      ids = page.children.where(type: 'Structure::SectionPage').map(&:content_id)
-      collection = Catalog::Section.where(id: ids)
-      list = concept('catalog/section/cell', collection: collection, method: :anons)
-      "<ul>#{list}</ul>"
-    end
+    ids = model.children.where(type: 'Structure::SectionPage').map(&:content_id)
+    collection = Catalog::Section.where(id: ids)
+    list = concept('catalog/section/cell', collection: collection, method: :anons)
+    "<ul>#{list}</ul>"
   end
 
   def description
-    model.description || 'No description'
+    content.description || 'No description'
   end
 
 end
