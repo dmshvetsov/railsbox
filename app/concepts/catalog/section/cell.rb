@@ -1,11 +1,7 @@
-class Catalog::Section::Cell < Structure::PageViewModel
+class Catalog::Section::Cell < Structure::SectionPageCellConcept
 
   def show
     render
-  end
-
-  def item
-    render(:item)
   end
 
   private

@@ -1,5 +1,5 @@
 module Structure
-  class PageViewModel < Cell::Concept
+  class SectionPageCellConcept < Cell::Concept
 
     abstract!
 
@@ -10,6 +10,11 @@ module Structure
     property :permalink
     property :published_at
     property :content
+
+    # Item for list view
+    def item
+      render(:item)
+    end
 
     # Render children pages of sections
     def children
