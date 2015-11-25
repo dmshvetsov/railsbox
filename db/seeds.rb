@@ -21,7 +21,10 @@ if Rails.env == 'development'
       },
       { title: 'Sedan', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'Sedan') } => {},
       { title: 'Sports cars', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'Sports cars') } => {},
-      { title: 'Hatchback', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'Hatchback') } => {}
+      { title: 'Hatchback', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'Hatchback') } => {},
+      { title: 'Info', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: BasicSection.create(title: 'Information about catalog') } => {
+        { title: 'How to use', type: 'Structure::ContentPage', menu: 'CatalogMenu', content: BasicPage.create(title: 'How to use', body: 'WIP') } => {}
+      }
     },
     { title: 'WIP', type: 'Structure::SectionPage', menu: 'MainMenu', visible: false, content: BasicSection.create(title: 'empty') } => {
       { title: 'draft', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'draft page') } => {},
