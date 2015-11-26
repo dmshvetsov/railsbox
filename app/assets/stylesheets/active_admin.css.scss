@@ -61,3 +61,11 @@
 .table-with-tree__collection {
   margin-left: 300px;
 }
+
+/**
+ * Inputs
+ */
+input:disabled,
+textarea:disabled {
+  background-color: #f4f4f4;
+}

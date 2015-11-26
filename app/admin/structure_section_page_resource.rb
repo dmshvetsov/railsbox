@@ -64,9 +64,7 @@ ActiveAdmin.register Structure::SectionPage do
       f.input :content_type, as: :hidden
       f.input :menu, as: :hidden
     end
-    f.inputs f.object.content.model_name.human, for: :content do |content|
-      content.inputs
-    end
+    f.inputs f.object.content.model_name.human, for: :content, &"#{f.object.content.class.name}::Admin".constantize.fields
     f.actions do
       f.action :submit, as: :input
       f.cancel_link(admin_structure_section_pages_path(categorizer_current_id: f.object.id || params[:parent_id], menu: params[:menu]))
