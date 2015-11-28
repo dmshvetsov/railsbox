@@ -9,7 +9,8 @@ module ActiveAdmin
         categorizer_current_id = params['categorizer_current_id']
 
         resource_name = active_admin_config.resource_name
-        @categorizer = Categorizer.new(resource_name.singular, resource_name.name, categorizer_current_id, params[:menu], collection)
+        language = params.fetch(:scope, Rails.configuration.i18n.default_locale)
+        @categorizer = Categorizer.new(resource_name.singular, resource_name.name, categorizer_current_id, params[:menu], language, collection)
 
         panel 'Sections', class: 'table-with-tree__categorizer' do
           build_tree @categorizer.tree
@@ -36,7 +37,7 @@ module ActiveAdmin
 
       def build_item item, childs
         title = @categorizer.title_for(item, childs)
-        url = url_for("categorizer_current_id" => item.id, "menu" => item.menu)
+        url = url_for("categorizer_current_id" => item.id, "menu" => item.menu, "scope" => params[:scope])
         css_class = @categorizer.css_class_for(item)
 
         li do

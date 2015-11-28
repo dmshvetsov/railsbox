@@ -15,24 +15,24 @@ if Rails.env == 'development'
   end
 
   {
-    { title: 'Car catalog', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'Car catalog') } => {
-      { title: 'SUV', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'SUV') } => {
-        { title: 'Jeep Compass', type: 'Structure::ContentPage', menu: 'CatalogMenu', content: Catalog::Car.create(make: 'Jeep', model: 'Compass', year: '2015') } => {}
+    { title: 'Car catalog', type: 'Structure::SectionPage', menu: 'CatalogMenu', language: 'en', content: Catalog::Section.create(title: 'Car catalog') } => {
+      { title: 'SUV', type: 'Structure::SectionPage', menu: 'CatalogMenu', language: 'en', content: Catalog::Section.create(title: 'SUV') } => {
+        { title: 'Jeep Compass', type: 'Structure::ContentPage', menu: 'CatalogMenu', language: 'en', content: Catalog::Car.create(make: 'Jeep', model: 'Compass', year: '2015') } => {}
       },
-      { title: 'Sedan', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'Sedan') } => {},
-      { title: 'Sports cars', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'Sports cars') } => {},
-      { title: 'Hatchback', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: Catalog::Section.create(title: 'Hatchback') } => {},
-      { title: 'Info', type: 'Structure::SectionPage', menu: 'CatalogMenu', content: BasicSection.create(title: 'Information about catalog') } => {
-        { title: 'How to use', type: 'Structure::ContentPage', menu: 'CatalogMenu', content: BasicPage.create(title: 'How to use', body: 'WIP') } => {}
+      { title: 'Sedan', type: 'Structure::SectionPage', menu: 'CatalogMenu', language: 'en', content: Catalog::Section.create(title: 'Sedan') } => {},
+      { title: 'Sports cars', type: 'Structure::SectionPage', menu: 'CatalogMenu', language: 'en', content: Catalog::Section.create(title: 'Sports cars') } => {},
+      { title: 'Hatchback', type: 'Structure::SectionPage', menu: 'CatalogMenu', language: 'en', content: Catalog::Section.create(title: 'Hatchback') } => {},
+      { title: 'Info', type: 'Structure::SectionPage', menu: 'CatalogMenu', language: 'en', content: BasicSection.create(title: 'Information about catalog') } => {
+        { title: 'How to use', type: 'Structure::ContentPage', menu: 'CatalogMenu', language: 'en', content: BasicPage.create(title: 'How to use', body: 'WIP') } => {}
       }
     },
-    { title: 'WIP', type: 'Structure::SectionPage', menu: 'MainMenu', visible: false, content: BasicSection.create(title: 'empty') } => {
-      { title: 'draft', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'draft page') } => {},
+    { title: 'WIP', type: 'Structure::SectionPage', menu: 'MainMenu', language: 'en', visible: false, content: BasicSection.create(title: 'empty') } => {
+      { title: 'draft', type: 'Structure::ContentPage', menu: 'MainMenu', language: 'en', content: BasicPage.create(title: 'draft page') } => {},
     },
-    { title: 'About', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'About Us') } => {},
-    { title: 'Contacts', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'Contacts') } => {},
-    { title: 'Documentation', type: 'Structure::SectionPage', menu: 'MainMenu', content: BasicSection.create(title: 'Documentation') } => {
-      { title: 'License', type: 'Structure::ContentPage', menu: 'MainMenu', content: BasicPage.create(title: 'License') } => {}
+    { title: 'About', type: 'Structure::ContentPage', menu: 'MainMenu', language: 'en', content: BasicPage.create(title: 'About Us') } => {},
+    { title: 'Contacts', type: 'Structure::ContentPage', menu: 'MainMenu', language: 'en', content: BasicPage.create(title: 'Contacts') } => {},
+    { title: 'Documentation', type: 'Structure::SectionPage', menu: 'MainMenu', language: 'en', content: BasicSection.create(title: 'Documentation') } => {
+      { title: 'License', type: 'Structure::ContentPage', menu: 'MainMenu', language: 'en', content: BasicPage.create(title: 'License') } => {}
     }
   }.each { |page, childs| create_page_stucture(page[:type], page, childs) }
 

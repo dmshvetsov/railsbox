@@ -64,6 +64,8 @@ feature 'Manage structure of the sites pages' do
     categorizer_panel.must_have_link 'Main Menu', href: admin_structure_section_pages_path(menu: 'MainMenu')
   end
 
+  scenario 'switch language'
+
   scenario 'create root section' do
     user = create :user
     admin_login user

@@ -2,6 +2,13 @@ ActiveAdmin.register Structure::SectionPage do
 
   menu label: 'Site Structure'
 
+  # Main language
+  scope(Rails.configuration.i18n.default_locale.to_s.downcase, default: true) { |s| s.where(language: Rails.configuration.i18n.default_locale.to_s.downcase) }
+  # Additional languages
+  %w(ru).each do |lang|
+    scope(lang) { |s| s.where(language: lang) }
+  end
+
   permit_params do
     permited = [
       :title,
@@ -15,7 +22,6 @@ ActiveAdmin.register Structure::SectionPage do
       :menu
     ]
     if content_class = params.fetch(:structure_section_page, {}).fetch(:content_type, nil)
-      # TODO: unsafe permited params
       content_params = content_class.constantize.attribute_names
       permited << { content_attributes: content_params }
     else
@@ -37,6 +43,7 @@ ActiveAdmin.register Structure::SectionPage do
         new_admin_structure_content_page_path(
           parent_id: params[:categorizer_current_id],
           content_type: model_string,
+          language: params[:scope],
           menu: params[:menu])
     end
   end
@@ -48,6 +55,7 @@ ActiveAdmin.register Structure::SectionPage do
         new_admin_structure_section_page_path(
           parent_id: params[:categorizer_current_id],
           content_type: model_string,
+          language: params[:scope],
           menu: params[:menu])
     end
   end
@@ -58,9 +66,9 @@ ActiveAdmin.register Structure::SectionPage do
       f.input :parent
       f.input :title
       f.input :slug
-      f.input :language
       f.input :visible
       f.input :published_at
+      f.input :language, as: :hidden
       f.input :content_type, as: :hidden
       f.input :menu, as: :hidden
     end
@@ -84,6 +92,7 @@ ActiveAdmin.register Structure::SectionPage do
     def new
       new! do
         @structure_section_page.menu = params[:menu]
+        @structure_section_page.language = params.fetch(:language, Rails.configuration.i18n.default_locale)
         @structure_section_page.parent_id = params[:parent_id] if params[:parent_id]
         @structure_section_page.content = params[:content_type].constantize.new if params[:content_type]
       end

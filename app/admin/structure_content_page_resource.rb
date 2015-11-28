@@ -18,7 +18,6 @@ ActiveAdmin.register Structure::ContentPage do
       :menu
     ]
     if content_class = params.fetch(:structure_content_page, {}).fetch(:content_type, nil)
-      # TODO: unsafe permited params
       content_params = content_class.constantize.attribute_names
       permited << { content_attributes: content_params }
     else
@@ -32,9 +31,9 @@ ActiveAdmin.register Structure::ContentPage do
       f.input :parent
       f.input :title
       f.input :slug
-      f.input :language
       f.input :visible
       f.input :published_at
+      f.input :language, as: :hidden
       f.input :content_type, as: :hidden
       f.input :menu, as: :hidden
     end
@@ -53,6 +52,7 @@ ActiveAdmin.register Structure::ContentPage do
     def new
       new! do
         @structure_content_page.menu = params[:menu]
+        @structure_content_page.language = params.fetch(:language, Rails.configuration.i18n.default_locale)
         @structure_content_page.parent_id = params[:parent_id] if params[:parent_id]
         @structure_content_page.content = params[:content_type].constantize.new if params[:content_type]
       end

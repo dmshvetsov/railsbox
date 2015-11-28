@@ -11,11 +11,12 @@ module ActiveAdmin
 
       attr_reader :name, :current_category, :model
 
-      def initialize(name, model, current_id, current_menu, associated_collection)
+      def initialize(name, model, current_id, current_menu, current_lang, associated_collection)
         @name = name
         @model = model.constantize
         @current_id = current_id.to_i if current_id
         @current_menu = current_menu
+        @current_lang = current_lang
         @associated_collection = associated_collection
         @current_category_ancestors_path = [ROOT_CATEGORY_ID]
 
@@ -32,7 +33,7 @@ module ActiveAdmin
         menus.each do |menu_class|
           next unless menu_class.in_categorizer?
           menu = @model.new(id: ROOT_CATEGORY_ID, title: I18n.t(menu_class.name), menu: menu_class.name)
-          childs = menu_class.pages.where(type: @model.name).hash_tree
+          childs = menu_class.pages.where(type: @model.name, language: @current_lang).hash_tree
           menus_tree[menu] = childs
         end
 
