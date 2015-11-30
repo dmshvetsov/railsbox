@@ -5,4 +5,16 @@ class ApplicationController < ActionController::Base
 
   include Structure::ControllerHelpers
 
+  before_action :set_locale
+
+  def default_url_options(options={})
+    { language: params[:language] }.merge(options)
+  end
+
+  private
+
+  def set_locale
+    I18n.locale = params[:language] || I18n.default_locale.to_s
+  end
+
 end

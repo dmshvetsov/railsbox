@@ -17,9 +17,19 @@ module Structure
     # Callbacks
     before_create :set_default_published_at
 
-    scope :is_published, proc { where('published_at < ?', Time.zone.now) }
-    scope :is_visible, proc { where(visible: true) }
-    scope :is_public, proc { is_published.is_visible }
+    scope :is_published, -> { where('published_at < ?', Time.zone.now) }
+    scope :is_visible, -> { where(visible: true) }
+    scope :is_public, -> { is_published.is_visible }
+    scope :item, ->(params) do
+      norm_params = params.dup
+      norm_params[:language] = I18n.default_locale if params[:language].nil?
+      find_by(language: norm_params[:language], permalink: norm_params[:permalink])
+    end
+    scope :items, ->(params) do
+      norm_params = params.dup
+      norm_params[:language] = I18n.default_locale if params[:language].nil?
+      where(menu: norm_params[:menu], language: norm_params[:language])
+    end
 
     # Let Rails to know how to build polymorphic Content
     def build_content(attr = {})

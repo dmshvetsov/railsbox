@@ -13,6 +13,10 @@
       <%= link_to 'RAILSBOX', root_path %>
     </div>
     <%= link_to 'Administration panel', admin_root_path %>
+    <div>
+      <%= link_to 'EN', root_path(language: nil) %> /
+      <%= link_to 'RU', root_path(language: 'ru') %>
+    </div>
 
     <%= render menu %>
     <br/>
@@ -23,7 +27,7 @@
     <%= render breadcrumbs %>
     <br/>
 
-    <% if current_page?(root_path) %>
+    <% if params[:controller] == 'site' && params[:action] == 'main' %>
       <h1>Ruby on Rails sandbox</h1>
     <% else %>
       <h1><%= @page.content.title %></h1>

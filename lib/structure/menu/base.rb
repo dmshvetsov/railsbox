@@ -4,26 +4,32 @@ module Structure
 
       attr_reader :items, :params
 
+      # options:
+      #   expand_all: load all menu items although which menu item is active
+      #   limit_depth: level of deep of menu (for more information ClosureTree gem #hash_tree)
       DEFAULT_OPTIONS = {
         expand_all: false,
         limit_depth: nil
       }
 
-      # options:
-      #   expand_all: load all menu items although which menu item is active
-      #   limit_depth: level of deep of menu (for more information ClosureTree gem #hash_tree)
       def initialize(controller_parameters, menu_options)
         @params = controller_parameters
         @options = menu_options.reverse_merge(DEFAULT_OPTIONS)
-        @items = build_menu_items_tree(self.class.pages.hash_tree(limit_depth: @options[:limit_depth]))
+        @items = nil
       end
 
-      def self.pages
-        Structure::Page.where(menu: self.name)
+      def self.build(controller_parameters, menu_options)
+        instance = new(controller_parameters, menu_options)
+        instance.build_menu_items_tree(instance.pages.hash_tree(limit_depth: menu_options[:limit_depth]))
+        instance
       end
 
       def self.in_categorizer?
         true
+      end
+
+      def pages
+        Structure::Page.items(menu: self.class.name, language: @params[:language])
       end
 
       def to_partial_path
@@ -34,8 +40,6 @@ module Structure
         "#{self.class.name}Item".constantize
       end
 
-      protected
-
       def build_menu_items_tree(pages)
         result = []
         pages.each do |page, childs|
@@ -44,8 +48,10 @@ module Structure
           result << build_menu_item(page, children)
         end
 
-        result
+        @items = result
       end
+
+      protected
 
       def build_menu_item(page, children)
         options = {}

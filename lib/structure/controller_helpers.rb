@@ -7,7 +7,7 @@ module Structure
 
     def menu(type = 'main', opts = {})
       menu_class = "#{type.to_s.classify}Menu".constantize
-      menu_class.new(params, opts)
+      menu_class.build(params, opts)
     end
 
     def breadcrumbs
