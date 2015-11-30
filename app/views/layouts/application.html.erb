@@ -10,7 +10,8 @@
 
   <div class="page--container">
     <%= link_to 'Administration panel', admin_root_path %> /
-    <%= link_to 'edit page', url_for([:edit, :admin, @page]) if @page.persisted? %>
+    <%= link_to 'edit page', url_for([:edit, :admin, @page]) if @page.persisted? && @page.type == 'Structure::ContentPage' %>
+    <%= link_to 'edit page', url_for(controller: '/admin/structure_section_pages', categorizer_current_id: @page.id, menu: @page.menu) if @page.persisted? && @page.type == 'Structure::SectionPage' %>
     <hr/>
     <div class="page--title">
       <%= link_to 'RAILSBOX', root_path %>

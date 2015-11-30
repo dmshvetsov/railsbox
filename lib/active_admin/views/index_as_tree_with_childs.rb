@@ -51,6 +51,10 @@ module ActiveAdmin
         panel current_category.title do
           div (current_category.visible) ? 'visible' : 'hidden'
           div do
+            route = ['page', 'path'].join('_')
+            link_to 'View on site', send(route, current_category)
+          end
+          div do
             route = ['edit', 'admin', current_category.model_name.singular_route_key, 'path'].join('_')
             link_to 'Edit section', send(route, current_category)
           end
