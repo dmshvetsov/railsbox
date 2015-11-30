@@ -60,6 +60,11 @@ ActiveAdmin.register Structure::SectionPage do
     end
   end
 
+  action_item :view, only: :edit do
+    language = resource.language == 'en' ? nil : resource.language
+    link_to 'View on site', page_path(resource, language: language) if resource.published?
+  end
+
   form do |f|
     f.semantic_errors
     f.inputs f.object.model_name.human do
