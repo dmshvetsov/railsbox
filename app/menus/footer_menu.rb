@@ -4,8 +4,8 @@ class FooterMenu < Structure::Menu::Base
     limit_depth: 1
   }
 
-  def self.pages
-    Structure::Page.where(menu: 'MainMenu')
+  def menu_name
+    'MainMenu'
   end
 
   def self.in_categorizer?

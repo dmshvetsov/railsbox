@@ -28,8 +28,12 @@ module Structure
         true
       end
 
+      def menu_name
+        self.class.name
+      end
+
       def pages
-        Structure::Page.items(menu: self.class.name, language: @params[:language])
+        Structure::Page.items(menu: menu_name, language: @params[:language])
       end
 
       def to_partial_path
