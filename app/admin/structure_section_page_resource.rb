@@ -62,7 +62,7 @@ ActiveAdmin.register Structure::SectionPage do
 
   action_item :view, only: :edit do
     language = resource.language == 'en' ? nil : resource.language
-    link_to 'View on site', page_path(resource, language: language) if resource.published?
+    link_to 'View on site', page_path(resource.permalink, language: language) if resource.published?
   end
 
   form do |f|

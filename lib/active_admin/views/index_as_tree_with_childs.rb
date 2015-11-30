@@ -52,7 +52,8 @@ module ActiveAdmin
           div (current_category.visible) ? 'visible' : 'hidden'
           div do
             route = ['page', 'path'].join('_')
-            link_to 'View on site', send(route, current_category)
+            language = current_category.language == 'en' ? nil : current_category.language
+            link_to 'View on site', send(route, current_category.permalink, language: language)
           end
           div do
             route = ['edit', 'admin', current_category.model_name.singular_route_key, 'path'].join('_')
