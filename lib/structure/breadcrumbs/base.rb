@@ -16,7 +16,7 @@ module Structure
       protected
 
       def build_crumbs
-        ancestors = @current_page.ancestors.to_a
+        ancestors = @current_page.ancestors.reverse_order
         crumbs = ancestors.map { |page| Item.new(page) }
         crumbs.unshift(build_main_item) if @current_page.persisted?
         crumbs
