@@ -3,11 +3,12 @@ ActiveAdmin.register Structure::SectionPage do
   menu label: 'Site Structure'
 
   # Main language
-  scope(Rails.configuration.i18n.default_locale.to_s.downcase, default: true) { |s| s.where(language: Rails.configuration.i18n.default_locale.to_s.downcase) }
+  scope(Rails.configuration.i18n.default_locale.to_s.downcase, default: true) do |relation|
+    relation.where(language: Rails.configuration.i18n.default_locale.to_s.downcase)
+  end
   # Additional languages
   %w(ru).each do |lang|
     scope(lang) do |relation|
-      I18n.locale = lang
       relation.where(language: lang)
     end
   end
@@ -88,6 +89,8 @@ ActiveAdmin.register Structure::SectionPage do
   end
 
   controller do
+    before_action :set_locale
+
     def find_resource
       scoped_collection.friendly.find(params[:id])
     end
@@ -126,6 +129,11 @@ ActiveAdmin.register Structure::SectionPage do
       destroy! do |format|
         format.html { redirect_to admin_structure_section_pages_path(categorizer_current_id: resource.parent_id), menu: resource.menu }
       end
+    end
+
+    def set_locale
+      locale = params[:scope] || params[:language] || Rails.configuration.i18n.default_locale
+      I18n.locale = locale
     end
   end
 
