@@ -9,8 +9,8 @@ module ActiveAdmin
         categorizer_current_id = params['categorizer_current_id']
 
         resource_name = active_admin_config.resource_name
-        language = params.fetch(:scope, Rails.configuration.i18n.default_locale)
-        @categorizer = Categorizer.new(resource_name.singular, resource_name.name, categorizer_current_id, params[:menu], language, collection)
+        @language = params.fetch(:scope, Rails.configuration.i18n.default_locale)
+        @categorizer = Categorizer.new(resource_name.singular, resource_name.name, categorizer_current_id, params[:menu], @language, collection)
 
         panel 'Sections', class: 'table-with-tree__categorizer' do
           build_tree @categorizer.tree
@@ -84,9 +84,9 @@ module ActiveAdmin
 
       def build_content_table(categorizer_current_id)
         if @categorizer.current_category
-          content = @categorizer.current_category.send(@page_presenter[:content].to_s.demodulize.underscore.pluralize).where(menu: params[:menu])
+          content = @categorizer.current_category.send(@page_presenter[:content].to_s.demodulize.underscore.pluralize).where(menu: params[:menu], language: @language)
         else
-          content = @page_presenter[:content].to_s.constantize.where(menu: params[:menu]).roots
+          content = @page_presenter[:content].to_s.constantize.where(menu: params[:menu], language: @language).roots
         end
 
         content_presenter = ActiveAdmin::PagePresenter.new as: :table do
