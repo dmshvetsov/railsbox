@@ -2,6 +2,10 @@ ActiveAdmin.register Structure::SectionPage do
 
   menu label: 'Site Structure'
 
+  breadcrumb do
+    nil
+  end
+
   # Main language
   scope(Rails.configuration.i18n.default_locale.to_s.downcase, default: true) do |relation|
     relation.where(language: Rails.configuration.i18n.default_locale.to_s.downcase)

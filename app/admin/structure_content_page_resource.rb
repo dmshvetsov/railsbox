@@ -5,6 +5,10 @@ ActiveAdmin.register Structure::ContentPage do
   config.sort_order = 'position_asc'
   sortable
 
+  breadcrumb do
+    nil
+  end
+
   permit_params do
     permited = [
       :title,
