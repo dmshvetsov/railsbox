@@ -6,7 +6,10 @@ ActiveAdmin.register Structure::SectionPage do
   scope(Rails.configuration.i18n.default_locale.to_s.downcase, default: true) { |s| s.where(language: Rails.configuration.i18n.default_locale.to_s.downcase) }
   # Additional languages
   %w(ru).each do |lang|
-    scope(lang) { |s| s.where(language: lang) }
+    scope(lang) do |relation|
+      I18n.locale = lang
+      relation.where(language: lang)
+    end
   end
 
   permit_params do
