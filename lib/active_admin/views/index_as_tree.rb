@@ -72,7 +72,9 @@ module ActiveAdmin
         child_pages_presenter = ActiveAdmin::PagePresenter.new as: :table do
           selectable_column
           column :title
-          column :type
+          column :type do |row|
+            row.content_type
+          end
           column :visible
           sortable_handle_column
           actions
