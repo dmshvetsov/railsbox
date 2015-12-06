@@ -69,7 +69,7 @@ module ActiveAdmin
         sql = { parent_id: categorizer_current_id, menu: params[:menu], language: @language }
         childs_categories = @collection.where sql
 
-        child_pages_presenter = ActiveAdmin::PagePresenter.new as: :table do
+        child_pages_presenter = ActiveAdmin::PagePresenter.new as: :table, row_class: -> elem { 'hidden' unless elem.visible? } do
           selectable_column
           column :title
           column :type do |row|
