@@ -4,7 +4,7 @@ module ActiveAdmin
     #
     # Assume that tree elements of a categorizer menu
     # respond to title and id
-    class Categorizer
+    class CategorizerTree
 
       # Id for virtual not persistent root category
       ROOT_CATEGORY_ID = nil
@@ -33,7 +33,7 @@ module ActiveAdmin
         menus.each do |menu_class|
           next unless menu_class.in_categorizer?
           menu = @model.new(id: ROOT_CATEGORY_ID, title: I18n.t(menu_class.name), menu: menu_class.name)
-          childs = menu_class.new({ language: @current_lang }, {}).pages.where(type: @model.name).hash_tree
+          childs = menu_class.new({ language: @current_lang }, {}).pages.hash_tree
           menus_tree[menu] = childs
         end
 

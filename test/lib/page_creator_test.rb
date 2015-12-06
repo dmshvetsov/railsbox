@@ -21,17 +21,16 @@ module Structure
     end
 
     def test_create_pages
-      assert subject.for(SectionPage, valid_attr).create.persisted?
+      assert subject.for(Page, valid_attr).create.persisted?
     end
 
     def test_create_page_of_given_type
-      assert_instance_of SectionPage, subject.for(SectionPage, valid_attr).create
-      assert_instance_of ContentPage, subject.for(ContentPage, valid_attr).create
+      assert_instance_of Page, subject.for(Page, valid_attr).create
     end
 
     def test_create_with_passed_attributes
       a_time = Time.zone.now
-      a_page = subject.for(SectionPage, title: 'Catalog', visible: true, published_at: a_time).create
+      a_page = subject.for(Page, title: 'Catalog', visible: true, published_at: a_time).create
 
       a_page.reload
       assert_equal a_page.title, 'Catalog'
@@ -40,13 +39,13 @@ module Structure
     end
 
     def test_do_not_create_if_attr_is_not_valid
-      a_page = subject.for(SectionPage, invalid_attr).create
+      a_page = subject.for(Page, invalid_attr).create
       refute a_page.valid?
       refute a_page.persisted?
     end
 
     def test_set_permalink_from_slug_for_root_pages
-      a_page = subject.for(SectionPage, title: 'About').create
+      a_page = subject.for(Page, title: 'About').create
       assert_equal 'about', a_page.permalink
     end
 

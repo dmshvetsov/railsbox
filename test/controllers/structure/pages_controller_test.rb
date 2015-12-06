@@ -7,7 +7,7 @@ describe Structure::PagesController do
     before do
       @about_content = create(:basic_page, title: 'About us', body: 'Work in progress')
       # @about_concept = concept('basic_page/cell', @about_content)
-      @about_page = create :content_page, slug: 'about', permalink: 'about', content: @about_content
+      @about_page = create :page, slug: 'about', permalink: 'about', content: @about_content
     end
 
     it 'respond 200' do
