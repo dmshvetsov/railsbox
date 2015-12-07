@@ -11,7 +11,9 @@ feature 'Manage structure of the sites pages' do
   end
 
   def into_form type
-    click_link "Create #{type}"
+    within '#titlebar_right .dropdown_menu_list' do
+      find_link(type, visible: :all).click
+    end
   end
 
   def into_section_page title

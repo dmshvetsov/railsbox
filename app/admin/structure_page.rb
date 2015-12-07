@@ -40,31 +40,20 @@ ActiveAdmin.register Structure::Page do
     end
   end
 
-  # Content create buttons
-  Structure.content_models.each do |model_string|
-    action_item model_string, only: :index do
-      link_to "Create #{model_string.constantize.model_name.human}",
-        new_admin_structure_page_path(
-          parent_id: params[:categorizer_current_id],
-          content_type: model_string,
-          language: params[:scope],
-          menu: params[:menu])
-    end
-  end
-
-  # Section create buttons
-  Structure.section_models.each do |model_string|
-    action_item model_string, only: :index do
-      link_to "Create #{model_string.constantize.model_name.human}",
-        new_admin_structure_page_path(
-          parent_id: params[:categorizer_current_id],
-          content_type: model_string,
-          language: params[:scope],
-          menu: params[:menu])
-    end
-  end
-
   index as: :tree
+
+  action_item 'AddContentDropDown', only: :index do
+    dropdown_menu "Add Page" do
+      Structure.content_types.each do |content_type|
+        item(content_type.constantize.model_name.human,
+                new_admin_structure_page_path(
+                  parent_id: params[:categorizer_current_id],
+                  content_type: content_type,
+                  language: params[:scope],
+                  menu: params[:menu]))
+      end
+    end
+  end
 
   form do |f|
     f.semantic_errors

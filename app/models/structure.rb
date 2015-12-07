@@ -1,11 +1,12 @@
 module Structure
 
-  def self.content_models
-    ['BasicPage', 'Catalog::Car']
-  end
-
-  def self.section_models
-    ['BasicSection', 'Catalog::Section']
+  def self.content_types
+    [
+      'BasicSection',
+      'BasicPage',
+      'Catalog::Section',
+      'Catalog::Car'
+    ]
   end
 
   def self.table_name_prefix
