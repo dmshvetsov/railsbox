@@ -72,15 +72,13 @@ module ActiveAdmin
         child_pages_presenter = ActiveAdmin::PagePresenter.new as: :table, row_class: -> elem { 'hidden' unless elem.visible? } do
           selectable_column
           column :title
-          column :type do |row|
-            row.content_type
-          end
+          column :content_type
           column :visible
           sortable_handle_column
           actions
         end
 
-        h2 'Sub Pages'
+        h2 'Child Pages'
         insert_tag(IndexAsTable, child_pages_presenter, childs_categories)
       end
 
