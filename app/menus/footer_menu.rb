@@ -8,8 +8,4 @@ class FooterMenu < Structure::Menu::Base
     'MainMenu'
   end
 
-  def self.in_categorizer?
-    false
-  end
-
 end

@@ -31,7 +31,6 @@ module ActiveAdmin
       def tree
         menus_tree = {}
         menus.each do |menu_class|
-          next unless menu_class.in_categorizer?
           menu = @model.new(id: ROOT_CATEGORY_ID, title: I18n.t(menu_class.name), menu: menu_class.name)
           childs = menu_class.new({ language: @current_lang }, {}).pages.hash_tree
           menus_tree[menu] = childs
@@ -76,7 +75,7 @@ module ActiveAdmin
 
       # Return array of all class names in app/menus as strings
       def menus
-        Dir.glob(Rails.root.join('app', 'menus', '*_menu.rb')).map { |f| File.basename(f, '.*').camelize.constantize }
+        Structure.menus.map { |menu| menu.to_s.camelize.constantize }
       end
 
     end

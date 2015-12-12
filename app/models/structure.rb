@@ -18,4 +18,16 @@ module Structure
     Page.new(title: I18n.t('structure.pages.root'), slug: '', permalink: '')
   end
 
+  def self.m_configuration
+    @m_configuration ||= Structure::Configuration.new
+  end
+
+  def self.m_configure
+    yield(m_configuration)
+  end
+
+  def self.menus
+    m_configuration.menus
+  end
+
 end

@@ -24,10 +24,6 @@ module Structure
         instance
       end
 
-      def self.in_categorizer?
-        true
-      end
-
       def menu_name
         self.class.name
       end
