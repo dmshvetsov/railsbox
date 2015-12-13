@@ -100,7 +100,7 @@ ActiveAdmin.register Structure::Page do
       @structure_page = Structure::PageCreator.for(end_of_association_chain, *resource_params).create
 
       create! do |success, failure|
-        success.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.id, menu: resource.menu) }
+        success.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.id, menu: resource.menu, scope: resource.language) }
       end
     end
 
@@ -108,13 +108,13 @@ ActiveAdmin.register Structure::Page do
       @structure_page = Structure::PageUpdater.for(resource).update(*resource_params)
 
       update! do |success, failure|
-        success.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.id, menu: resource.menu) }
+        success.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.id, menu: resource.menu, scope: resource.language) }
       end
     end
 
     def destroy
       destroy! do |format|
-        format.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.parent_id, menu: resource.menu) }
+        format.html { redirect_to admin_structure_pages_path(categorizer_current_id: resource.parent_id, menu: resource.menu, scope: resource.language) }
       end
     end
 
