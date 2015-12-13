@@ -153,4 +153,18 @@ ActiveAdmin.register Structure::Page do
                                plural_model: active_admin_config.plural_resource_label(count: selected_ids.count).downcase))
   end
 
+  batch_action :hide do |selected_ids|
+    batch_action_collection.where(id: selected_ids).update_all(visible: false)
+
+    redirect_to(admin_structure_pages_path(categorizer_current_id: params[:categorizer_current_id], menu: params[:menu], scope: params[:scope]),
+                notice: I18n.t("active_admin.batch_actions.succesfully_hidden"))
+  end
+
+  batch_action :reveal do |selected_ids|
+    batch_action_collection.where(id: selected_ids).update_all(visible: true)
+
+    redirect_to(admin_structure_pages_path(categorizer_current_id: params[:categorizer_current_id], menu: params[:menu], scope: params[:scope]),
+                notice: I18n.t("active_admin.batch_actions.succesfully_revealed"))
+  end
+
 end

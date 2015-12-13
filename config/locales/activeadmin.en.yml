@@ -1,3 +1,6 @@
 en:
-  activeadmin:
+  active_admin:
     import: 'Import'
+    batch_actions:
+      succesfully_hidden: 'Pages succesfully hidden'
+      succesfully_revealed: 'Pages succesfully revealed'

@@ -1,0 +1,5 @@
+ru:
+  active_admin:
+    batch_actions:
+      succesfully_hidden: 'Страницы успешно скрыты от просмотра'
+      succesfully_revealed: 'Страницы успешно открыты для просмотра'

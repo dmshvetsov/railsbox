@@ -80,8 +80,8 @@ module ActiveAdmin
           actions
         end
 
-        input name: :categorizer_current_id, type: :hidden, value: params[:categorizer_current_id]
-        input name: :menu, type: :hidden, value: params[:menu]
+        input name: :categorizer_current_id, type: :hidden, value: params[:categorizer_current_id] if params[:categorizer_current_id]
+        input name: :menu, type: :hidden, value: params[:menu] if params[:menu]
 
         h2 'Child Pages'
         insert_tag(IndexAsTable, child_pages_presenter, childs_categories)
