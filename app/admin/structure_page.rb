@@ -124,6 +124,16 @@ ActiveAdmin.register Structure::Page do
     end
   end
 
+  member_action :hide, method: :put do
+    resource.update(visible: false)
+    redirect_to admin_structure_pages_path(categorizer_current_id: resource.id, menu: resource.menu)
+  end
+
+  member_action :reveal, method: :put do
+    resource.update(visible: true)
+    redirect_to admin_structure_pages_path(categorizer_current_id: resource.id, menu: resource.menu)
+  end
+
   # Batch Actions
   destroy_batch_action_options = {
     priority: 100,

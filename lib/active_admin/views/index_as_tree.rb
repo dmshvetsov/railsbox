@@ -12,7 +12,7 @@ module ActiveAdmin
         @language = params.fetch(:scope, Rails.configuration.i18n.default_locale)
         @categorizer = CategorizerTree.new(resource_name.singular, resource_name.name, categorizer_current_id, params[:menu], @language, collection)
 
-        panel 'Sections', class: 'table-with-tree__categorizer' do
+        panel 'Pages Tree', class: 'table-with-tree__categorizer' do
           build_tree(@categorizer.tree)
         end
 
@@ -48,16 +48,16 @@ module ActiveAdmin
         current_category = @categorizer.current_category
         language = current_category.language == 'en' ? nil : current_category.language
 
-        panel current_category.title do
+        panel 'Page' do
           attributes_table_for(current_category, :title, :permalink, :published_at, :visible, :content_type)
           table_actions do
             route = ['page', 'path'].join('_')
             text_node link_to('View Page on Site', send(route, current_category.permalink, language: language), class: 'member_link')
             text_node link_to('Edit Page', url_for(['edit', 'admin', current_category, { menu: params[:menu], language: language }]), class: 'member_link')
             if current_category.visible
-              text_node link_to('Hide Page', '#', class: 'member_link')
+              text_node link_to('Hide Page', hide_admin_structure_page_path(current_category, { categorizer_current_id: current_category.id, menu: current_category.menu }), class: 'member_link', method: :put)
             else
-              text_node link_to('Show Page', '#', class: 'member_link')
+              text_node link_to('Show Page', reveal_admin_structure_page_path(current_category, { categorizer_current_id: current_category.id, menu: current_category.menu }), class: 'member_link', method: :put)
             end
             route = ['admin', current_category.model_name.singular_route_key, 'path'].join('_')
             text_node link_to 'Delete Page', send(route, current_category), class: 'member_link', method: :delete, data: { confirm: I18n.t('active_admin.delete_confirmation') }
