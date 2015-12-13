@@ -7,7 +7,6 @@ module Structure
 
     # All pages always have this fields
     property :title
-    property :permalink
     property :published_at
     property :content
 
@@ -18,8 +17,12 @@ module Structure
 
     # Render children pages of sections
     def children
-      collection = model.children.where(type: 'Structure::SectionPage')
+      collection = model.children
       concept(self.class.name, collection: collection, method: :item)
+    end
+
+    def permalink
+      "/#{model.permalink}"
     end
 
   end
