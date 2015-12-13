@@ -74,6 +74,7 @@ ActiveAdmin.register Structure::Page do
     end
   end
 
+  # Controller
   controller do
     before_action :set_locale
 
@@ -121,6 +122,25 @@ ActiveAdmin.register Structure::Page do
       locale = params[:scope] || params[:language] || Rails.configuration.i18n.default_locale
       I18n.locale = locale
     end
+  end
+
+  # Batch Actions
+  destroy_batch_action_options = {
+    priority: 100,
+    confirm: proc{ I18n.t('active_admin.batch_actions.delete_confirmation', plural_model: active_admin_config.plural_resource_label.downcase) },
+    if: proc{ controller.action_methods.include?('destroy') && authorized?(ActiveAdmin::Auth::DESTROY, active_admin_config.resource_class) }
+  }
+  batch_action :destroy, destroy_batch_action_options do |selected_ids|
+    batch_action_collection.find(selected_ids).each do |record|
+      authorize! ActiveAdmin::Auth::DESTROY, record
+      destroy_resource(record)
+    end
+
+    redirect_to(collection_path(params),
+                notice: I18n.t("active_admin.batch_actions.succesfully_destroyed",
+                               count: selected_ids.count,
+                               model: active_admin_config.resource_label.downcase,
+                               plural_model: active_admin_config.plural_resource_label(count: selected_ids.count).downcase))
   end
 
 end

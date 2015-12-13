@@ -10,8 +10,20 @@ module ActiveAdminHelper
     fill_in 'user[password]', with: user.password
     submit_form
 
-    current_path.must_equal '/admin'
+    current_path.must_equal '/admin', 'Login failed'
     page.must_have_content 'Signed in successfully.'
+  end
+
+  def dialog_confirm
+    within '.active_admin_dialog' do
+      click_button('OK')
+    end
+  end
+
+  def dialog_cancel
+    within '.active_admin_dialog' do
+      click_button('Cancel')
+    end
   end
 
 end

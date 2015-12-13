@@ -16,7 +16,7 @@ feature 'Manage structure of the sites pages' do
     end
   end
 
-  def into_section_page title
+  def into_categorizer_page title
     within '.table-with-tree__categorizer.panel' do
       click_link title
     end
@@ -59,10 +59,10 @@ feature 'Manage structure of the sites pages' do
     into_site_structure_page
     categorizer_panel.must_have_link 'Main Menu', href: admin_structure_pages_path(menu: 'MainMenu')
 
-    into_section_page 'Car Catalog'
+    into_categorizer_page 'Car Catalog'
     categorizer_panel.must_have_link 'Main Menu', href: admin_structure_pages_path(menu: 'MainMenu')
 
-    into_section_page '4WD'
+    into_categorizer_page '4WD'
     categorizer_panel.must_have_link 'Main Menu', href: admin_structure_pages_path(menu: 'MainMenu')
   end
 
@@ -105,7 +105,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Car Catalog'
+    into_categorizer_page 'Car Catalog'
     assert_difference 'Structure::Page.count', -1 do
       click_link 'Delete Page'
     end
@@ -120,7 +120,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Car Catalog'
+    into_categorizer_page 'Car Catalog'
     into_edit_current_page
 
     fill_in 'structure_page[title]', with: 'Auto Catalog'
@@ -136,7 +136,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Car Catalog'
+    into_categorizer_page 'Car Catalog'
     into_form 'Basic section'
 
     parent_section = find('select[name="structure_page[parent_id]"]').value
@@ -211,8 +211,8 @@ feature 'Manage structure of the sites pages' do
     content_page = create(:page, title: 'Jeep Compass', slug: 'compass', permalink: 'car-catalog/svu/compass', parent: catalog_section)
 
     into_site_structure_page
-    into_section_page 'Car catalog'
-    into_section_page 'SVU'
+    into_categorizer_page 'Car catalog'
+    into_categorizer_page 'SVU'
     into_edit_content_page content_page
 
     select 'Car catalog', from: 'structure_page[parent_id]'
@@ -232,8 +232,8 @@ feature 'Manage structure of the sites pages' do
     create(:page, title: 'Jeep Compass', slug: 'compass', permalink: 'car-catalog/svu/compass', parent: catalog_section)
 
     into_site_structure_page
-    into_section_page 'Car catalog'
-    into_section_page 'SVU'
+    into_categorizer_page 'Car catalog'
+    into_categorizer_page 'SVU'
     into_edit_current_page
 
     select nil, from: 'structure_page[parent_id]'
@@ -251,7 +251,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Car Catalog'
+    into_categorizer_page 'Car Catalog'
     into_edit_content_page content
 
     fill_in 'structure_page[title]', with: 'Jeep Compass 2015'
@@ -270,7 +270,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Car Catalog'
+    into_categorizer_page 'Car Catalog'
     assert_difference 'Structure::Page.count', -1 do
       find(:xpath, "//a[@data-method='delete' and @href='#{admin_structure_content_page_path(content)}']").click
     end
@@ -293,7 +293,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Car Catalog'
+    into_categorizer_page 'Car Catalog'
     into_form 'Basic page'
 
     parent_section = find('select[name="structure_page[parent_id]"]').value
@@ -316,7 +316,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Information'
+    into_categorizer_page 'Information'
     into_form 'Basic page'
 
     assert_difference 'BasicPage.count', 1 do
@@ -338,7 +338,7 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Information'
+    into_categorizer_page 'Information'
     into_edit_current_page
 
     click_link 'Cancel'
@@ -353,12 +353,42 @@ feature 'Manage structure of the sites pages' do
     admin_login user
 
     into_site_structure_page
-    into_section_page 'Information'
+    into_categorizer_page 'Information'
     into_edit_content_page content
 
     click_link 'Cancel'
     current_path.must_equal admin_structure_pages_path
     current_section.text.must_equal 'Some page'
+  end
+
+  scenario 'Batch delete', js: true do
+    Structure.m_configure { |config| config.menus << :catalog_menu }
+
+    drafts_section = create(:page, title: 'Draft Sections', slug: 'drafts', permalink: 'drafts', menu: 'CatalogMenu')
+    pages_to_delete = [
+      create(:page, title: 'Draft 1', slug: 'draft-1', permalink: 'drafts/draft-1', parent: drafts_section, menu: 'CatalogMenu'),
+      create(:page, title: 'Draft 2', slug: 'draft-2', permalink: 'drafts/draft-2', parent: drafts_section, menu: 'CatalogMenu')
+    ]
+
+    user = create(:user)
+    admin_login(user)
+
+    into_site_structure_page
+    into_categorizer_page('Draft Sections')
+
+    pages_to_delete.each do |a_page|
+      check("batch_action_item_#{a_page.id}")
+    end
+    click_link('Batch Actions')
+    click_link('Delete Selected')
+    dialog_confirm
+
+    pages_to_delete.each do |a_page|
+      assert_equal false, Structure::Page.exists?(a_page.id)
+      refute Structure::Page.exists?(a_page.id)
+    end
+
+    current_section.text.must_equal 'Draft Sections'
   end
 
 end

@@ -42,6 +42,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'selenium-webdriver'
   gem 'minitest-rails-capybara', '2.1.1'
   gem 'database_cleaner', '1.5.0'
 end
