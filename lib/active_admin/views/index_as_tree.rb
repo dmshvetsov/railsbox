@@ -49,17 +49,18 @@ module ActiveAdmin
         language = current_category.language == 'en' ? nil : current_category.language
 
         panel current_category.title do
-          div (current_category.visible) ? 'visible' : 'hidden'
-          div do
+          attributes_table_for(current_category, :title, :permalink, :published_at, :visible, :content_type)
+          table_actions do
             route = ['page', 'path'].join('_')
-            link_to 'View on site', send(route, current_category.permalink, language: language)
-          end
-          div do
-            link_to 'Edit Page', url_for(['edit', 'admin', current_category, { menu: params[:menu], language: language }])
-          end
-          div do
+            text_node link_to('View Page on Site', send(route, current_category.permalink, language: language), class: 'member_link')
+            text_node link_to('Edit Page', url_for(['edit', 'admin', current_category, { menu: params[:menu], language: language }]), class: 'member_link')
+            if current_category.visible
+              text_node link_to('Hide Page', '#', class: 'member_link')
+            else
+              text_node link_to('Show Page', '#', class: 'member_link')
+            end
             route = ['admin', current_category.model_name.singular_route_key, 'path'].join('_')
-            link_to 'Delete Page', send(route, current_category), method: :delete
+            text_node link_to 'Delete Page', send(route, current_category), class: 'member_link', method: :delete, data: { confirm: I18n.t('active_admin.delete_confirmation') }
           end
         end
       end
@@ -67,6 +68,8 @@ module ActiveAdmin
       def build_childs_table(categorizer_current_id)
         sql = { parent_id: categorizer_current_id, menu: params[:menu], language: @language }
         childs_categories = @collection.where sql
+
+        return h2('No Child Pages') unless childs_categories.any?
 
         child_pages_presenter = ActiveAdmin::PagePresenter.new as: :table, row_class: -> elem { 'hidden' unless elem.visible? } do
           selectable_column
