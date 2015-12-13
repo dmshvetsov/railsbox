@@ -58,7 +58,7 @@ ActiveAdmin.register Structure::Page do
   form do |f|
     f.semantic_errors
     f.inputs f.object.model_name.human do
-      f.input :parent
+      f.input :parent, collection: Structure::Page.where(language: I18n.locale).where.not(id: f.object.id)
       f.input :title
       f.input :slug
       f.input :visible
@@ -74,7 +74,7 @@ ActiveAdmin.register Structure::Page do
     end
   end
 
-  # Controller
+  # Controller and Actions
   controller do
     before_action :set_locale
 
