@@ -57,7 +57,7 @@ module Structure
     end
 
     def build_concept
-      concept("#{content_type}::Cell", self)
+      concept("#{content_type}::Cell::Show".underscore, self)
     end
 
     private

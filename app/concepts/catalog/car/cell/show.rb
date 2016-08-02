@@ -1,4 +1,4 @@
-class Catalog::Car::Cell < Cell::Concept
+class Catalog::Car::Cell::Show < Trailblazer::Cell
 
   property :content
 

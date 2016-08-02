@@ -1,4 +1,4 @@
-class Catalog::Section::Cell < Structure::SectionPageCellConcept
+class Catalog::Section::Cell::Show < Trailblazer::Cell
 
   def show
     render

@@ -1,4 +1,4 @@
-class BasicPage::Cell < Cell::Concept
+class BasicPage::Cell::Show < Trailblazer::Cell
 
   property :content
 
