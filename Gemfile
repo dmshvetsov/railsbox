@@ -24,6 +24,8 @@ gem 'friendly_id', '5.1.0'
 gem 'cells', '4.0.2'
 gem 'cells-erb'
 
+gem 'slim', '3.0.7' # without slim-rails
+
 group :development do
   gem 'rack-mini-profiler', '0.9.7', require: false
 end
