@@ -4,19 +4,20 @@ module ViewComponent
   class BaseTest < ActiveSupport::TestCase
     # Default test options for
     # ViewComponent::Base class
-    def default_options
-      { template_dir: 'test/fixtures/view' }
+    def fake_configuration
+      conf = Struct.new(:template_dir)
+      conf.new('test/fixtures/view')
     end
 
     def test_render_template_with_erubis_engine
-      component = Base.new(default_options)
+      component = Base.new(fake_configuration)
       result = component.render_template('hello_world/show.html.erb')
 
       assert_equal "<h1>Hello Erubis!</h1>\n<p>Ruby sign</p>\n", result
     end
 
     def test_render_template_with_slim_engine
-      component = Base.new(default_options)
+      component = Base.new(fake_configuration)
       result = component.render_template('hello_world/show.html.slim')
 
       assert_equal "<h1>Hello Slim!</h1><p>Ruby sign</p>", result
@@ -28,7 +29,7 @@ module ViewComponent
           'Hello from component helper!'
         end
       end
-      component = component_class.new(default_options)
+      component = component_class.new(fake_configuration)
       result = component.render_template('hello_world/bindings.html.erb')
 
       assert_equal "<h1>Hello from component helper!</h1>\n", result

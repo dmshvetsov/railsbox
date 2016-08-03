@@ -1,7 +1,7 @@
 module ViewComponent
   class Base
-    def initialize(options)
-      @options = options
+    def initialize(config)
+      @config = config
     end
 
     def render_template(name)
@@ -23,11 +23,11 @@ module ViewComponent
 
     private
 
-    attr_reader :options
+    attr_reader :config
 
     # Directory with templates
     def template_dir
-      options.fetch(:template_dir)
+      config.template_dir
     end
 
     # Template in string representation
