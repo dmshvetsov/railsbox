@@ -63,4 +63,6 @@
 #   });
 #
 module ViewComponent
+  require 'view_component/configuration'
+  require 'view_component/base'
 end
